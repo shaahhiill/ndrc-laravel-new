@@ -16,14 +16,14 @@
                 </svg>
             </div>
             <h1 class="text-4xl font-black text-gray-900 tracking-tighter uppercase">Nestlé <span class="text-nestle-blue">NDRC</span></h1>
-            <p class="text-gray-500 font-medium mt-2">Digital Distribution & Reporting Center</p>
+            <p class="text-gray-700 font-bold mt-2">Digital Distribution & Reporting Center</p>
         </div>
 
         <!-- Login Card -->
-        <div class="bg-white/70 backdrop-blur-xl p-8 sm:p-10 rounded-[2.5rem] shadow-2xl shadow-gray-200/50 border border-white/50">
+        <div class="bg-white/90 backdrop-blur-xl p-8 sm:p-10 rounded-[2.5rem] shadow-2xl shadow-gray-300/50 border border-white">
             <div class="mb-8">
-                <h2 class="text-2xl font-black text-gray-900 leading-none">Welcome Back</h2>
-                <p class="text-sm text-gray-500 mt-2 font-medium">Please enter your details to sign in.</p>
+                <h2 class="text-3xl font-black text-gray-900 leading-none">Welcome Back</h2>
+                <p class="text-sm text-gray-700 mt-2 font-bold">Please enter your details to sign in.</p>
             </div>
 
             @if ($errors->any())
@@ -35,7 +35,7 @@
                             </svg>
                         </div>
                         <div class="ml-3">
-                            <p class="text-sm font-bold text-red-700">{{ $errors->first() }}</p>
+                            <p class="text-sm font-bold text-red-800">{{ $errors->first() }}</p>
                         </div>
                     </div>
                 </div>
@@ -44,33 +44,32 @@
             <form action="{{ route('login.post') }}" method="POST" class="space-y-6">
                 @csrf
                 <div>
-                    <label for="email" class="block text-xs font-black text-gray-400 uppercase tracking-widest ml-1 mb-2">Email Identity</label>
+                    <label for="email" class="block text-xs font-black text-gray-900 uppercase tracking-widest ml-1 mb-2">Email Identity</label>
                     <input id="email" name="email" type="email" autocomplete="email" required value="{{ old('email') }}" 
                         placeholder="john.doe@nestle.com"
-                        class="block w-full bg-gray-50 border-0 rounded-2xl py-4 px-6 text-gray-900 shadow-inner ring-1 ring-inset ring-gray-100 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-nestle-blue transition-all font-medium">
+                        class="block w-full bg-gray-50 border-2 border-gray-100 rounded-2xl py-4 px-6 text-gray-900 placeholder:text-gray-500 focus:border-nestle-blue focus:ring-0 transition-all font-bold">
                 </div>
 
                 <div>
                     <div class="flex items-center justify-between ml-1 mb-2">
-                        <label for="password" class="block text-xs font-black text-gray-400 uppercase tracking-widest">Security Key</label>
+                        <label for="password" class="block text-xs font-black text-gray-900 uppercase tracking-widest">Security Key</label>
                         <a href="#" class="text-[10px] font-black text-nestle-blue uppercase tracking-widest hover:opacity-70 transition-opacity">Forgot?</a>
                     </div>
                     <input id="password" name="password" type="password" required 
                         placeholder="••••••••"
-                        class="block w-full bg-gray-50 border-0 rounded-2xl py-4 px-6 text-gray-900 shadow-inner ring-1 ring-inset ring-gray-100 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-nestle-blue transition-all font-medium">
+                        class="block w-full bg-gray-50 border-2 border-gray-100 rounded-2xl py-4 px-6 text-gray-900 placeholder:text-gray-500 focus:border-nestle-blue focus:ring-0 transition-all font-bold">
                 </div>
 
                 <div class="pt-2">
                     <button type="submit" 
-                        class="group relative w-full flex justify-center py-4 px-6 border border-transparent rounded-2xl text-sm font-black text-white bg-gray-900 hover:bg-nestle-blue focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-nestle-blue transition-all shadow-xl shadow-gray-900/10 hover:shadow-nestle-blue/20 overflow-hidden">
-                        <span class="relative z-10 transition-transform group-hover:scale-110">Access Dashboard</span>
-                        <div class="absolute inset-0 bg-gradient-to-r from-nestle-blue to-blue-600 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                        class="group relative w-full flex justify-center py-5 px-6 border border-transparent rounded-2xl text-sm font-black text-white bg-gray-900 hover:bg-nestle-blue focus:outline-none transition-all shadow-xl shadow-gray-900/20 hover:shadow-nestle-blue/40 overflow-hidden">
+                        <span class="relative z-10">Access Dashboard</span>
                     </button>
                 </div>
             </form>
 
-            <div class="mt-8 text-center pt-8 border-t border-gray-50">
-                <p class="text-sm font-medium text-gray-500">
+            <div class="mt-8 text-center pt-8 border-t border-gray-100">
+                <p class="text-sm font-bold text-gray-700">
                     Don't have an NDRC account?
                     <a href="{{ route('register') }}" class="font-black text-nestle-blue hover:underline underline-offset-4 decoration-2">Request Access</a>
                 </p>
@@ -79,8 +78,8 @@
         
         <!-- Trust Badge -->
         <div class="mt-8 text-center flex items-center justify-center gap-2">
-            <span class="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></span>
-            <span class="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em]">Secure Node 01 | End-to-End Encrypted</span>
+            <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+            <span class="text-[10px] font-black text-gray-800 uppercase tracking-[0.2em]">Secure Node 01 | Encrypted Connection</span>
         </div>
     </div>
 </div>
