@@ -47,7 +47,7 @@
                     <label for="email" class="block text-xs font-black text-gray-900 uppercase tracking-widest ml-1 mb-2">Email Identity</label>
                     <input id="email" name="email" type="email" autocomplete="email" required value="{{ old('email') }}" 
                         placeholder="john.doe@nestle.com"
-                        class="block w-full bg-gray-50 border-2 border-gray-100 rounded-2xl py-4 px-6 text-gray-900 placeholder:text-gray-500 focus:border-nestle-blue focus:ring-0 transition-all font-bold">
+                        class="block w-full bg-gray-50 border-2 border-gray-100 rounded-2xl py-4 px-6 text-gray-900 placeholder:text-gray-400 focus:border-nestle-blue focus:ring-0 transition-all font-bold">
                 </div>
 
                 <div>
@@ -57,7 +57,7 @@
                     </div>
                     <input id="password" name="password" type="password" required 
                         placeholder="••••••••"
-                        class="block w-full bg-gray-50 border-2 border-gray-100 rounded-2xl py-4 px-6 text-gray-900 placeholder:text-gray-500 focus:border-nestle-blue focus:ring-0 transition-all font-bold">
+                        class="block w-full bg-gray-50 border-2 border-gray-100 rounded-2xl py-4 px-6 text-gray-900 placeholder:text-gray-400 focus:border-nestle-blue focus:ring-0 transition-all font-bold">
                 </div>
 
                 <div class="pt-2">

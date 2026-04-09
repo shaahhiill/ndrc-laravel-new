@@ -45,28 +45,28 @@
                     <div class="grid grid-cols-1 gap-6">
                         <div>
                             <label for="name" class="block text-xs font-black text-gray-900 uppercase tracking-widest ml-1 mb-2">Full Name / Business Name</label>
-                            <input id="name" name="name" type="text" required class="block w-full bg-gray-50 border-2 border-gray-100 rounded-2xl py-4 px-6 text-gray-900 placeholder:text-gray-900 focus:border-nestle-blue focus:ring-0 font-bold" placeholder="E.g. Udakara Stores">
+                            <input id="name" name="name" type="text" required class="block w-full bg-gray-50 border-2 border-gray-100 rounded-2xl py-4 px-6 text-gray-900 placeholder:text-gray-400 focus:border-nestle-blue focus:ring-0 font-bold" placeholder="E.g. Udakara Stores">
                         </div>
 
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div>
                                 <label for="email" class="block text-xs font-black text-gray-900 uppercase tracking-widest ml-1 mb-2">Email Address</label>
-                                <input id="email" name="email" type="email" required class="block w-full bg-gray-50 border-2 border-gray-100 rounded-2xl py-4 px-6 text-gray-900 placeholder:text-gray-900 focus:border-nestle-blue focus:ring-0 font-bold" placeholder="contact@business.com">
+                                <input id="email" name="email" type="email" required class="block w-full bg-gray-50 border-2 border-gray-100 rounded-2xl py-4 px-6 text-gray-900 placeholder:text-gray-400 focus:border-nestle-blue focus:ring-0 font-bold" placeholder="contact@business.com">
                             </div>
                             <div>
                                 <label for="phone" class="block text-xs font-black text-gray-900 uppercase tracking-widest ml-1 mb-2">Phone Number</label>
-                                <input id="phone" name="phone" type="tel" required class="block w-full bg-gray-50 border-2 border-gray-100 rounded-2xl py-4 px-6 text-gray-900 placeholder:text-gray-900 focus:border-nestle-blue focus:ring-0 font-bold" placeholder="07XXXXXXXX">
+                                <input id="phone" name="phone" type="tel" required class="block w-full bg-gray-50 border-2 border-gray-100 rounded-2xl py-4 px-6 text-gray-900 placeholder:text-gray-400 focus:border-nestle-blue focus:ring-0 font-bold" placeholder="07XXXXXXXX">
                             </div>
                         </div>
 
                         <div>
                             <label for="address" class="block text-xs font-black text-gray-900 uppercase tracking-widest ml-1 mb-2">Business Address</label>
-                            <textarea id="address" name="address" rows="2" required class="block w-full bg-gray-50 border-2 border-gray-100 rounded-2xl py-4 px-6 text-gray-900 placeholder:text-gray-900 focus:border-nestle-blue focus:ring-0 font-bold" placeholder="Full physical address..."></textarea>
+                            <textarea id="address" name="address" rows="2" required class="block w-full bg-gray-50 border-2 border-gray-100 rounded-2xl py-4 px-6 text-gray-900 placeholder:text-gray-400 focus:border-nestle-blue focus:ring-0 font-bold" placeholder="Full physical address..."></textarea>
                         </div>
 
                         <div>
                             <label for="password" class="block text-xs font-black text-gray-900 uppercase tracking-widest ml-1 mb-2">Security Key (Password)</label>
-                            <input id="password" name="password" type="password" required class="block w-full bg-gray-50 border-2 border-gray-100 rounded-2xl py-4 px-6 text-gray-900 placeholder:text-gray-900 focus:border-nestle-blue focus:ring-0 font-bold" placeholder="••••••••">
+                            <input id="password" name="password" type="password" required class="block w-full bg-gray-50 border-2 border-gray-100 rounded-2xl py-4 px-6 text-gray-900 placeholder:text-gray-400 focus:border-nestle-blue focus:ring-0 font-bold" placeholder="••••••••">
                         </div>
 
                         <div>
