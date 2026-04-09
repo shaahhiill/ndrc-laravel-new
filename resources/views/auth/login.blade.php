@@ -9,14 +9,13 @@
     <div class="w-full max-w-md z-10">
         <!-- Logo Section -->
         <div class="text-center mb-8">
-            <div class="inline-flex items-center justify-center w-20 h-20 bg-white rounded-3xl shadow-xl shadow-nestle-blue/10 mb-6 p-4">
-                <!-- Nestlé Logo Placeholder - Replace src with your actual logo path -->
-                <svg viewBox="0 0 100 100" class="w-full text-nestle-blue fill-current">
-                    <path d="M50 5C25.1 5 5 25.1 5 50s20.1 45 45 45 45-20.1 45-45S74.9 5 50 5zm0 82C29.6 87 13 70.4 13 50S29.6 13 50 13s37 16.6 37 37-16.6 37-37 37z"/>
-                    <path d="M50 25c-13.8 0-25 11.2-25 25s11.2 25 25 25 25-11.2 25-25-11.2-25-25-25zm0 42c-9.4 0-17-7.6-17-17s7.6-17 17-17 17 7.6 17 17-7.6 17-17 17z"/>
+            <div class="inline-flex items-center justify-center w-24 h-24 bg-white rounded-3xl shadow-xl shadow-nestle-blue/10 mb-6 p-4">
+                <!-- Authentic Nestlé Bird's Nest SVG -->
+                <svg viewBox="0 0 100 80" class="w-full text-nestle-blue fill-current">
+                    <path d="M75,55 C78,55 80,53 80,50 L80,30 C80,27 78,25 75,25 L25,25 C22,25 20,27 20,30 L20,50 C20,53 22,55 25,55 L35,55 L32,65 L68,65 L65,55 L75,55 Z M50,15 C55,15 58,18 58,22 C58,26 55,29 50,29 C45,29 42,26 42,22 C42,18 45,15 50,15 Z M30,40 C33,40 35,38 35,35 C35,32 33,30 30,30 C27,30 25,32 25,35 C25,38 27,40 30,40 Z M70,40 C73,40 75,38 75,35 C75,32 73,30 70,30 C67,30 65,32 65,35 C65,38 67,40 70,40 Z"/>
                 </svg>
             </div>
-            <h1 class="text-3xl font-black text-gray-900 tracking-tighter uppercase">Nestlé <span class="text-nestle-blue">NDRC</span></h1>
+            <h1 class="text-4xl font-black text-gray-900 tracking-tighter uppercase">Nestlé <span class="text-nestle-blue">NDRC</span></h1>
             <p class="text-gray-500 font-medium mt-2">Digital Distribution & Reporting Center</p>
         </div>
 

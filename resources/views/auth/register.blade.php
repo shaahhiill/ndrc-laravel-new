@@ -1,139 +1,160 @@
 @extends('layouts.app')
 
 @section('content')
-<style>
-.role-card.active {
-    border-color: #0082c3 !important;
-    background-color: #f0f9ff !important;
-    box-shadow: 0 0 0 2px #0082c3 !important;
-}
-</style>
+<div class="min-h-screen flex items-center justify-center bg-nestle-bg relative overflow-hidden px-4 py-12">
+    <!-- Background Decorative Elements -->
+    <div class="absolute -top-24 -left-24 w-96 h-96 bg-nestle-blue/10 rounded-full blur-3xl"></div>
+    <div class="absolute -bottom-24 -right-24 w-96 h-96 bg-nestle-brown/10 rounded-full blur-3xl"></div>
 
-<div class="flex min-h-full flex-col justify-center py-12 sm:px-6 lg:px-8">
-    <div class="sm:mx-auto sm:w-full sm:max-w-md">
-        <h2 class="mt-6 text-center text-2xl font-bold leading-9 tracking-tight text-nestle-brown underline decoration-nestle-blue decoration-4 underline-offset-8">Create NDRC Account</h2>
-        <p class="mt-2 text-center text-sm text-gray-600">
-            Already have an account?
-            <a href="{{ route('login') }}" class="font-semibold leading-6 text-nestle-blue hover:text-nestle-blue/80">Sign in</a>
-        </p>
-    </div>
+    <div class="w-full max-w-xl z-10" x-data="{ step: 1, selectedRole: '' }">
+        <!-- Header -->
+        <div class="text-center mb-8">
+            <div class="inline-flex items-center justify-center w-24 h-24 bg-white rounded-3xl shadow-xl shadow-nestle-blue/10 mb-6 p-4 mx-auto">
+                <!-- Authentic Nestlé Bird's Nest SVG -->
+                <svg viewBox="0 0 100 80" class="w-full text-nestle-blue fill-current">
+                    <path d="M75,55 C78,55 80,53 80,50 L80,30 C80,27 78,25 75,25 L25,25 C22,25 20,27 20,30 L20,50 C20,53 22,55 25,55 L35,55 L32,65 L68,65 L65,55 L75,55 Z M50,15 C55,15 58,18 58,22 C58,26 55,29 50,29 C45,29 42,26 42,22 C42,18 45,15 50,15 Z M30,40 C33,40 35,38 35,35 C35,32 33,30 30,30 C27,30 25,32 25,35 C25,38 27,40 30,40 Z M70,40 C73,40 75,38 75,35 C75,32 73,30 70,30 C67,30 65,32 65,35 C65,38 67,40 70,40 Z"/>
+                </svg>
+            </div>
+            <h1 class="text-3xl font-black text-gray-900 tracking-tighter uppercase">Create <span class="text-nestle-blue">NDRC</span> Account</h1>
+            <p class="text-gray-500 font-medium mt-2">Join the Nestlé Digital Distribution Network</p>
+        </div>
 
-    <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-[550px]" x-data="{ step: 1, selectedRole: '' }">
-        <div class="bg-white px-6 py-12 shadow sm:rounded-xl sm:px-12 border border-gray-100">
-            <form id="registerForm" class="space-y-6" action="{{ route('register.post') }}" method="POST">
+        <!-- Multi-step Form -->
+        <div class="bg-white/70 backdrop-blur-xl p-8 sm:p-10 rounded-[2.5rem] shadow-2xl shadow-gray-200/50 border border-white/50">
+            
+            <!-- Progress Indicator -->
+            <div class="flex items-center justify-center mb-10 gap-4">
+                <div class="flex items-center gap-2">
+                    <div class="w-8 h-8 rounded-full flex items-center justify-center font-black text-xs transition-colors" 
+                        :class="step >= 1 ? 'bg-nestle-blue text-white' : 'bg-gray-100 text-gray-400'">1</div>
+                    <span class="text-[10px] font-black uppercase tracking-widest text-gray-400">Identity</span>
+                </div>
+                <div class="w-12 h-px bg-gray-100"></div>
+                <div class="flex items-center gap-2">
+                    <div class="w-8 h-8 rounded-full flex items-center justify-center font-black text-xs transition-colors" 
+                        :class="step >= 2 ? 'bg-nestle-blue text-white' : 'bg-gray-100 text-gray-400'">2</div>
+                    <span class="text-[10px] font-black uppercase tracking-widest text-gray-400">Context</span>
+                </div>
+            </div>
+
+            <form id="registerForm" action="{{ route('register.post') }}" method="POST" class="space-y-6">
                 @csrf
+                
                 <!-- Step 1: Basic Info -->
-                <div x-show="step === 1" class="space-y-6">
-                    <div>
-                        <label for="name" class="block text-sm font-medium text-gray-900">Full Name / Business Name</label>
-                        <div class="mt-2">
-                            <input id="name" name="name" type="text" required class="block w-full rounded-lg border-0 py-2.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-nestle-blue px-4">
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div x-show="step === 1" x-transition class="space-y-6">
+                    <div class="grid grid-cols-1 gap-6">
                         <div>
-                            <label for="email" class="block text-sm font-medium text-gray-900">Email address</label>
-                            <div class="mt-2">
-                                <input id="email" name="email" type="email" required class="block w-full rounded-lg border-0 py-2.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-nestle-blue px-4">
+                            <label for="name" class="block text-xs font-black text-gray-400 uppercase tracking-widest ml-1 mb-2">Full Name / Business Name</label>
+                            <input id="name" name="name" type="text" required class="block w-full bg-gray-50 border-0 rounded-2xl py-4 px-6 text-gray-900 ring-1 ring-inset ring-gray-100 focus:ring-2 focus:ring-nestle-blue transition-all font-medium" placeholder="E.g. Udakara Stores">
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label for="email" class="block text-xs font-black text-gray-400 uppercase tracking-widest ml-1 mb-2">Email Address</label>
+                                <input id="email" name="email" type="email" required class="block w-full bg-gray-50 border-0 rounded-2xl py-4 px-6 text-gray-900 ring-1 ring-inset ring-gray-100 focus:ring-2 focus:ring-nestle-blue transition-all font-medium" placeholder="contact@business.com">
+                            </div>
+                            <div>
+                                <label for="phone" class="block text-xs font-black text-gray-400 uppercase tracking-widest ml-1 mb-2">Phone Number</label>
+                                <input id="phone" name="phone" type="tel" required class="block w-full bg-gray-50 border-0 rounded-2xl py-4 px-6 text-gray-900 ring-1 ring-inset ring-gray-100 focus:ring-2 focus:ring-nestle-blue transition-all font-medium" placeholder="07XXXXXXXX">
                             </div>
                         </div>
+
                         <div>
-                            <label for="phone" class="block text-sm font-medium text-gray-900">Phone Number</label>
-                            <div class="mt-2">
-                                <input id="phone" name="phone" type="tel" required class="block w-full rounded-lg border-0 py-2.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-nestle-blue px-4">
+                            <label for="address" class="block text-xs font-black text-gray-400 uppercase tracking-widest ml-1 mb-2">Business Address</label>
+                            <textarea id="address" name="address" rows="2" required class="block w-full bg-gray-50 border-0 rounded-2xl py-4 px-6 text-gray-900 ring-1 ring-inset ring-gray-100 focus:ring-2 focus:ring-nestle-blue transition-all font-medium" placeholder="Full physical address..."></textarea>
+                        </div>
+
+                        <div>
+                            <label for="password" class="block text-xs font-black text-gray-400 uppercase tracking-widest ml-1 mb-2">Security Key (Password)</label>
+                            <input id="password" name="password" type="password" required class="block w-full bg-gray-50 border-0 rounded-2xl py-4 px-6 text-gray-900 ring-1 ring-inset ring-gray-100 focus:ring-2 focus:ring-nestle-blue transition-all font-medium" placeholder="••••••••">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-black text-gray-400 uppercase tracking-widest ml-1 mb-4">Select Your Role</label>
+                            <div class="grid grid-cols-1 gap-3">
+                                <label class="relative flex cursor-pointer rounded-2xl border p-4 hover:border-nestle-blue transition-all" :class="selectedRole === 'retailer' ? 'border-nestle-blue bg-nestle-blue/5 ring-2 ring-nestle-blue' : 'border-gray-100 bg-gray-50'">
+                                    <input type="radio" name="role" value="retailer" x-model="selectedRole" required class="sr-only">
+                                    <span class="flex items-center gap-4">
+                                        <span class="text-2xl">🏪</span>
+                                        <span class="flex flex-col">
+                                            <span class="block text-sm font-black text-gray-900">Retailer</span>
+                                            <span class="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Store owner / End seller</span>
+                                        </span>
+                                    </span>
+                                </label>
+
+                                <label class="relative flex cursor-pointer rounded-2xl border p-4 hover:border-nestle-blue transition-all" :class="selectedRole === 'wholesaler' ? 'border-nestle-blue bg-nestle-blue/5 ring-2 ring-nestle-blue' : 'border-gray-100 bg-gray-50'">
+                                    <input type="radio" name="role" value="wholesaler" x-model="selectedRole" class="sr-only">
+                                    <span class="flex items-center gap-4">
+                                        <span class="text-2xl">🏭</span>
+                                        <span class="flex flex-col">
+                                            <span class="block text-sm font-black text-gray-900">Wholesaler</span>
+                                            <span class="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Network Supplier</span>
+                                        </span>
+                                    </span>
+                                </label>
+
+                                <label class="relative flex cursor-pointer rounded-2xl border p-4 hover:border-nestle-blue transition-all" :class="selectedRole === 'distributor' ? 'border-nestle-blue bg-nestle-blue/5 ring-2 ring-nestle-blue' : 'border-gray-100 bg-gray-50'">
+                                    <input type="radio" name="role" value="distributor" x-model="selectedRole" class="sr-only">
+                                    <span class="flex items-center gap-4">
+                                        <span class="text-2xl">🚚</span>
+                                        <span class="flex flex-col">
+                                            <span class="block text-sm font-black text-gray-900">Distributor</span>
+                                            <span class="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Main Supply Hub</span>
+                                        </span>
+                                    </span>
+                                </label>
                             </div>
                         </div>
                     </div>
 
-                    <div>
-                        <label for="address" class="block text-sm font-medium text-gray-900">Physical Store / Business Address</label>
-                        <div class="mt-2">
-                            <textarea id="address" name="address" rows="2" required placeholder="e.g. 123, Galle Road, Colombo 03" class="block w-full rounded-lg border-0 py-2.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-nestle-blue px-4"></textarea>
-                        </div>
+                    <div class="pt-4">
+                        <button type="button" 
+                            @click="if(document.getElementById('registerForm').checkValidity()) { step = 2 } else { document.getElementById('registerForm').reportValidity() }"
+                            class="w-full flex justify-center py-4 px-6 rounded-2xl text-sm font-black text-white bg-gray-900 hover:bg-nestle-blue transition-all shadow-xl shadow-gray-900/10 hover:shadow-nestle-blue/20">
+                            Continue to Assignment →
+                        </button>
                     </div>
-
-                    <div>
-                        <label for="password" class="block text-sm font-medium text-gray-900">Password</label>
-                        <div class="mt-2">
-                            <input id="password" name="password" type="password" required class="block w-full rounded-lg border-0 py-2.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-nestle-blue px-4">
-                        </div>
-                    </div>
-
-                    <div>
-                        <label class="block text-sm font-medium text-gray-900 mb-4">Select Your Role</label>
-                        <div class="grid grid-cols-1 gap-3">
-                            <label class="role-card relative flex cursor-pointer rounded-lg border bg-white p-4 shadow-sm focus:outline-none hover:border-nestle-blue group transition-all" :class="selectedRole === 'retailer' ? 'active' : ''">
-                                <input type="radio" name="role" value="retailer" x-model="selectedRole" required class="sr-only">
-                                <span class="flex flex-1">
-                                    <span class="flex flex-col">
-                                        <span class="block text-sm font-medium text-gray-900">Retailer</span>
-                                        <span class="mt-1 flex items-center text-sm text-gray-500">I own a shop and want to place orders.</span>
-                                    </span>
-                                </span>
-                                <span class="text-2xl group-hover:scale-110 transition-transform">🏪</span>
-                            </label>
-
-                            <label class="role-card relative flex cursor-pointer rounded-lg border bg-white p-4 shadow-sm focus:outline-none hover:border-nestle-blue group transition-all" :class="selectedRole === 'wholesaler' ? 'active' : ''">
-                                <input type="radio" name="role" value="wholesaler" x-model="selectedRole" class="sr-only">
-                                <span class="flex flex-1">
-                                    <span class="flex flex-col">
-                                        <span class="block text-sm font-medium text-gray-900">Wholesaler</span>
-                                        <span class="mt-1 flex items-center text-sm text-gray-500">I supply to retailers.</span>
-                                    </span>
-                                </span>
-                                <span class="text-2xl group-hover:scale-110 transition-transform">🏭</span>
-                            </label>
-                            
-                            <label class="role-card relative flex cursor-pointer rounded-lg border bg-white p-4 shadow-sm focus:outline-none hover:border-nestle-blue group transition-all" :class="selectedRole === 'distributor' ? 'active' : ''">
-                                <input type="radio" name="role" value="distributor" x-model="selectedRole" class="sr-only">
-                                <span class="flex flex-1">
-                                    <span class="flex flex-col">
-                                        <span class="block text-sm font-medium text-gray-900">Distributor</span>
-                                        <span class="mt-1 flex items-center text-sm text-gray-500">I supply directly to wholesalers.</span>
-                                    </span>
-                                </span>
-                                <span class="text-2xl group-hover:scale-110 transition-transform">🚚</span>
-                            </label>
-                        </div>
-                    </div>
-
-                    <button type="button" @click="if(selectedRole) step = 2" class="flex w-full justify-center rounded-lg bg-nestle-brown px-3 py-3 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-nestle-brown/90 transition-all">Continue to Details →</button>
                 </div>
 
                 <!-- Step 2: Role-Specific Fields -->
-                <div x-show="step === 2" class="space-y-6">
-                    <button type="button" @click="step = 1" class="text-sm font-semibold text-nestle-blue hover:text-nestle-blue/80 flex items-center">
-                        <span class="mr-1">←</span> Back to Basic Info
+                <div x-show="step === 2" x-transition class="space-y-6">
+                    <button type="button" @click="step = 1" class="text-[10px] font-black text-nestle-blue uppercase tracking-widest hover:opacity-70 flex items-center mb-6">
+                        <span class="mr-1">←</span> Back to Personal Info
                     </button>
 
+                    <!-- Retailer Details -->
                     <div x-show="selectedRole === 'retailer'" class="space-y-6">
-                        <h3 class="text-lg font-bold text-nestle-brown">Retailer Context</h3>
+                        <h3 class="text-xl font-black text-gray-900">Retailer Configuration</h3>
+                        
                         <div x-data="{ orderType: 'direct' }">
-                            <label class="block text-sm font-medium text-gray-900">How do you place orders?</label>
-                            <div class="mt-4 space-y-4">
-                                <div class="flex items-center">
-                                    <input id="via_wholesaler" name="order_type" type="radio" value="wholesaler" x-model="orderType" class="h-4 w-4 border-gray-300 text-nestle-blue focus:ring-nestle-blue">
-                                    <label for="via_wholesaler" class="ml-3 block text-sm font-medium text-gray-700">Via a Wholesaler</label>
-                                </div>
-                                <div x-show="orderType === 'wholesaler'" class="ml-7 mt-2">
-                                    <select name="wholesaler_id" class="block w-full rounded-lg border-0 py-2.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-nestle-blue px-4">
-                                        <option value="">Select your Wholesaler</option>
-                                        @foreach($wholesalers as $w)
-                                            <option value="{{ $w->id }}">{{ $w->name }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <div class="flex items-center">
-                                    <input id="direct_dist" name="order_type" type="radio" value="direct" x-model="orderType" class="h-4 w-4 border-gray-300 text-nestle-blue focus:ring-nestle-blue">
-                                    <label for="direct_dist" class="ml-3 block text-sm font-medium text-gray-700">Directly from Distributor</label>
-                                </div>
+                            <label class="block text-xs font-black text-gray-400 uppercase tracking-widest ml-1 mb-4">Supply Channel</label>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <label class="cursor-pointer p-4 rounded-2xl border transition-all" :class="orderType === 'wholesaler' ? 'border-nestle-blue bg-nestle-blue/5 ring-1 ring-nestle-blue' : 'bg-gray-50 border-gray-100'">
+                                    <input name="order_type" type="radio" value="wholesaler" x-model="orderType" class="sr-only">
+                                    <span class="block text-xs font-black text-gray-800 text-center">Via Wholesaler</span>
+                                </label>
+                                <label class="cursor-pointer p-4 rounded-2xl border transition-all" :class="orderType === 'direct' ? 'border-nestle-blue bg-nestle-blue/5 ring-1 ring-nestle-blue' : 'bg-gray-50 border-gray-100'">
+                                    <input name="order_type" type="radio" value="direct" x-model="orderType" class="sr-only">
+                                    <span class="block text-xs font-black text-gray-800 text-center">Direct Distributor</span>
+                                </label>
+                            </div>
+
+                            <div x-show="orderType === 'wholesaler'" x-transition class="mt-6">
+                                <label class="block text-xs font-black text-gray-400 uppercase tracking-widest ml-1 mb-2">Select Wholesaler</label>
+                                <select name="wholesaler_id" class="block w-full bg-gray-50 border-0 rounded-2xl py-4 px-6 text-gray-900 ring-1 ring-inset ring-gray-100 focus:ring-2 focus:ring-nestle-blue font-medium">
+                                    <option value="">Select a partner...</option>
+                                    @foreach($wholesalers as $w)
+                                        <option value="{{ $w->id }}">{{ $w->name }}</option>
+                                    @endforeach
+                                </select>
                             </div>
                         </div>
+
                         <div>
-                            <label class="block text-sm font-medium text-gray-900">Choose Your Primary Distributor</label>
-                            <select name="distributor_id" required class="mt-2 block w-full rounded-lg border-0 py-2.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-nestle-blue px-4">
-                                <option value="">Select a Distributor</option>
+                            <label class="block text-xs font-black text-gray-400 uppercase tracking-widest ml-1 mb-2">Primary Distributor Hub</label>
+                            <select name="distributor_id" required class="block w-full bg-gray-50 border-0 rounded-2xl py-4 px-6 text-gray-900 ring-1 ring-inset ring-gray-100 focus:ring-2 focus:ring-nestle-blue font-medium">
+                                <option value="">Select hub...</option>
                                 @foreach($distributors as $d)
                                     <option value="{{ $d->id }}">{{ $d->name }} ({{ $d->territory }})</option>
                                 @endforeach
@@ -141,12 +162,13 @@
                         </div>
                     </div>
 
+                    <!-- Wholesaler Details -->
                     <div x-show="selectedRole === 'wholesaler'" class="space-y-6">
-                        <h3 class="text-lg font-bold text-nestle-brown">Wholesaler Details</h3>
+                        <h3 class="text-xl font-black text-gray-900">Wholesaler Setup</h3>
                         <div>
-                            <label class="block text-sm font-medium text-gray-900">Affiliated Nestle Distributor</label>
-                            <select name="distributor_id" class="mt-2 block w-full rounded-lg border-0 py-2.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-nestle-blue px-4">
-                                <option value="">Select your Distributor</option>
+                            <label class="block text-xs font-black text-gray-400 uppercase tracking-widest ml-1 mb-2">Affiliated Distributor</label>
+                            <select name="distributor_id" class="block w-full bg-gray-50 border-0 rounded-2xl py-4 px-6 text-gray-900 ring-1 ring-inset ring-gray-100 focus:ring-2 focus:ring-nestle-blue font-medium">
+                                <option value="">Select your source hub...</option>
                                 @foreach($distributors as $d)
                                     <option value="{{ $d->id }}">{{ $d->name }} ({{ $d->territory }})</option>
                                 @endforeach
@@ -154,11 +176,12 @@
                         </div>
                     </div>
 
+                    <!-- Distributor Details -->
                     <div x-show="selectedRole === 'distributor'" class="space-y-6">
-                        <h3 class="text-lg font-bold text-nestle-brown">Distributor Assignment</h3>
+                        <h3 class="text-xl font-black text-gray-900">Hub Assignment</h3>
                         <div>
-                            <label class="block text-sm font-medium text-gray-900">Assigned Territory</label>
-                            <select name="territory" class="mt-2 block w-full rounded-lg border-0 py-2.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-nestle-blue px-4">
+                            <label class="block text-xs font-black text-gray-400 uppercase tracking-widest ml-1 mb-2">Operational Territory</label>
+                            <select name="territory" class="block w-full bg-gray-50 border-0 rounded-2xl py-4 px-6 text-gray-900 ring-1 ring-inset ring-gray-100 focus:ring-2 focus:ring-nestle-blue font-medium">
                                 <option>Western Province</option>
                                 <option>Central Province</option>
                                 <option>Southern Province</option>
@@ -168,9 +191,28 @@
                         </div>
                     </div>
 
-                    <button type="submit" class="flex w-full justify-center rounded-lg bg-nestle-brown px-3 py-3 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-nestle-brown/90 transition-all">Complete Registration</button>
+                    <div class="pt-6">
+                        <button type="submit" 
+                            class="w-full flex justify-center py-4 px-6 border border-transparent rounded-2xl text-sm font-black text-white bg-nestle-brown hover:bg-gray-900 transition-all shadow-xl shadow-nestle-brown/10 hover:shadow-gray-900/20">
+                            Complete Registration
+                        </button>
+                    </div>
                 </div>
             </form>
+
+            <div class="mt-8 text-center pt-8 border-t border-gray-50">
+                <p class="text-sm font-medium text-gray-500">
+                    Already an NDRC member?
+                    <a href="{{ route('login') }}" class="font-black text-nestle-blue hover:underline underline-offset-4 decoration-2">Sign In</a>
+                </p>
+            </div>
+        </div>
+
+        <!-- Footer Note -->
+        <div class="mt-8 text-center">
+            <p class="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] leading-relaxed">
+                By registering, you agree to the Nestlé NDRC <br> Data Processing & Distribution Terms.
+            </p>
         </div>
     </div>
 </div>
