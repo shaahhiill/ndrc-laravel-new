@@ -10,13 +10,12 @@
         <!-- Header -->
         <div class="text-center mb-8">
             <div class="inline-flex items-center justify-center w-24 h-24 bg-white rounded-3xl shadow-xl shadow-nestle-blue/10 mb-6 p-4 mx-auto">
-                <!-- Authentic Nestlé Bird's Nest SVG -->
                 <svg viewBox="0 0 100 80" class="w-full text-nestle-blue fill-current">
                     <path d="M75,55 C78,55 80,53 80,50 L80,30 C80,27 78,25 75,25 L25,25 C22,25 20,27 20,30 L20,50 C20,53 22,55 25,55 L35,55 L32,65 L68,65 L65,55 L75,55 Z M50,15 C55,15 58,18 58,22 C58,26 55,29 50,29 C45,29 42,26 42,22 C42,18 45,15 50,15 Z M30,40 C33,40 35,38 35,35 C35,32 33,30 30,30 C27,30 25,32 25,35 C25,38 27,40 30,40 Z M70,40 C73,40 75,38 75,35 C75,32 73,30 70,30 C67,30 65,32 65,35 C65,38 67,40 70,40 Z"/>
                 </svg>
             </div>
-            <h1 class="text-4xl font-black text-gray-900 tracking-tighter uppercase">Create <span class="text-nestle-blue">NDRC</span> Account</h1>
-            <p class="text-gray-800 font-bold mt-2">Join the Nestlé Digital Distribution Network</p>
+            <h1 class="text-4xl font-black text-gray-900 tracking-tighter uppercase">Join <span class="text-nestle-blue">NDRC</span></h1>
+            <p class="text-gray-800 font-bold mt-2">Create your account</p>
         </div>
 
         <!-- Multi-step Form -->
@@ -25,15 +24,15 @@
             <!-- Progress Indicator -->
             <div class="flex items-center justify-center mb-10 gap-4 font-black">
                 <div class="flex items-center gap-2">
-                    <div class="w-8 h-8 rounded-full flex items-center justify-center text-xs transition-colors" 
-                        :class="step >= 1 ? 'bg-nestle-blue text-white shadow-lg' : 'bg-gray-200 text-gray-500'">1</div>
-                    <span class="text-[10px] uppercase tracking-widest text-gray-900">Identity</span>
+                    <div class="w-8 h-8 rounded-full flex items-center justify-center text-xs transition-colors shadow-lg" 
+                        :class="step >= 1 ? 'bg-nestle-blue text-white' : 'bg-gray-200 text-gray-500'">1</div>
+                    <span class="text-[10px] uppercase tracking-widest text-gray-900">Basic Info</span>
                 </div>
                 <div class="w-12 h-1 bg-gray-200 rounded-full"></div>
                 <div class="flex items-center gap-2">
-                    <div class="w-8 h-8 rounded-full flex items-center justify-center text-xs transition-colors" 
-                        :class="step >= 2 ? 'bg-nestle-blue text-white shadow-lg' : 'bg-gray-200 text-gray-500'">2</div>
-                    <span class="text-[10px] uppercase tracking-widest text-gray-900">Context</span>
+                    <div class="w-8 h-8 rounded-full flex items-center justify-center text-xs transition-colors shadow-lg" 
+                        :class="step >= 2 ? 'bg-nestle-blue text-white' : 'bg-gray-200 text-gray-500'">2</div>
+                    <span class="text-[10px] uppercase tracking-widest text-gray-900">Your Role</span>
                 </div>
             </div>
 
@@ -110,9 +109,9 @@
 
                     <div class="pt-4">
                         <button type="button" 
-                            @click="if(document.getElementById('registerForm').checkValidity()) { step = 2 } else { document.getElementById('registerForm').reportValidity() }"
-                            class="w-full flex justify-center py-4 px-6 rounded-2xl text-sm font-black text-white bg-gray-900 hover:bg-nestle-blue transition-all shadow-xl shadow-gray-900/10 hover:shadow-nestle-blue/20">
-                            Continue to Assignment →
+                            @click="const fields = document.getElementById('step1').querySelectorAll('input, select, textarea'); if([...fields].every(f => f.checkValidity())) { step = 2 } else { document.getElementById('step1').querySelector(':invalid')?.reportValidity() }"
+                            class="w-full flex justify-center py-5 px-6 rounded-2xl text-base font-black text-white bg-gray-900 hover:bg-nestle-blue transition-all shadow-xl shadow-gray-900/20">
+                            Next Step →
                         </button>
                     </div>
                 </div>
@@ -120,7 +119,7 @@
                 <!-- Step 2: Role-Specific Fields -->
                 <div x-show="step === 2" x-transition class="space-y-6">
                     <button type="button" @click="step = 1" class="text-sm font-black text-nestle-blue uppercase tracking-widest hover:opacity-70 flex items-center mb-6">
-                        <span class="mr-1">←</span> Back to Personal Info
+                        <span class="mr-1">←</span> Back
                     </button>
 
                     <!-- Retailer Details -->
@@ -194,7 +193,7 @@
                     <div class="pt-6">
                         <button type="submit" 
                             class="w-full flex justify-center py-5 px-6 border border-transparent rounded-2xl text-base font-black text-white bg-nestle-brown hover:bg-gray-900 transition-all shadow-xl shadow-nestle-brown/20">
-                            Complete Registration
+                            Register Now
                         </button>
                     </div>
                 </div>

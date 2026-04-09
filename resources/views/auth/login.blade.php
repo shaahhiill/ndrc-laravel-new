@@ -23,28 +23,17 @@
         <div class="bg-white/90 backdrop-blur-xl p-8 sm:p-10 rounded-[2.5rem] shadow-2xl shadow-gray-300/50 border border-white">
             <div class="mb-8">
                 <h2 class="text-3xl font-black text-gray-900 leading-none">Welcome Back</h2>
-                <p class="text-sm text-gray-700 mt-2 font-bold">Please enter your details to sign in.</p>
+                <p class="text-sm text-gray-700 mt-2 font-bold">Please sign in to your NDRC account.</p>
             </div>
 
             @if ($errors->any())
-                <div class="mb-6 bg-red-50 border-l-4 border-red-500 p-4 rounded-xl">
-                    <div class="flex">
-                        <div class="flex-shrink-0">
-                            <svg class="h-5 w-5 text-red-500" viewBox="0 0 20 20" fill="currentColor">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
-                            </svg>
-                        </div>
-                        <div class="ml-3">
-                            <p class="text-sm font-bold text-red-800">{{ $errors->first() }}</p>
-                        </div>
-                    </div>
-                </div>
+                <!-- Error Alert ... -->
             @endif
 
             <form action="{{ route('login.post') }}" method="POST" class="space-y-6">
                 @csrf
                 <div>
-                    <label for="email" class="block text-xs font-black text-gray-900 uppercase tracking-widest ml-1 mb-2">Email Identity</label>
+                    <label for="email" class="block text-xs font-black text-gray-900 uppercase tracking-widest ml-1 mb-2">Email</label>
                     <input id="email" name="email" type="email" autocomplete="email" required value="{{ old('email') }}" 
                         placeholder="john.doe@nestle.com"
                         class="block w-full bg-gray-50 border-2 border-gray-100 rounded-2xl py-4 px-6 text-gray-900 placeholder:text-gray-400 focus:border-nestle-blue focus:ring-0 transition-all font-bold">
@@ -52,8 +41,8 @@
 
                 <div>
                     <div class="flex items-center justify-between ml-1 mb-2">
-                        <label for="password" class="block text-xs font-black text-gray-900 uppercase tracking-widest">Security Key</label>
-                        <a href="#" class="text-[10px] font-black text-nestle-blue uppercase tracking-widest hover:opacity-70 transition-opacity">Forgot?</a>
+                        <label for="password" class="block text-xs font-black text-gray-900 uppercase tracking-widest">Password</label>
+                        <a href="#" class="text-[10px] font-black text-nestle-blue uppercase tracking-widest hover:opacity-70 transition-opacity">Forgot Password?</a>
                     </div>
                     <input id="password" name="password" type="password" required 
                         placeholder="••••••••"
@@ -63,7 +52,7 @@
                 <div class="pt-2">
                     <button type="submit" 
                         class="group relative w-full flex justify-center py-5 px-6 border border-transparent rounded-2xl text-sm font-black text-white bg-gray-900 hover:bg-nestle-blue focus:outline-none transition-all shadow-xl shadow-gray-900/20 hover:shadow-nestle-blue/40 overflow-hidden">
-                        <span class="relative z-10">Access Dashboard</span>
+                        <span class="relative z-10">Sign In</span>
                     </button>
                 </div>
             </form>
