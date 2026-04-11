@@ -26,6 +26,12 @@
                 <p class="text-sm text-gray-700 mt-2 font-bold">Please sign in to your NDRC account.</p>
             </div>
 
+            @if (session('success'))
+                <div class="mb-6 bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-2xl text-sm font-bold text-center animate-pulse">
+                    {{ session('success') }}
+                </div>
+            @endif
+
             @if ($errors->any())
                 <!-- Error Alert ... -->
             @endif
@@ -39,14 +45,29 @@
                         class="block w-full bg-gray-50 border-2 border-gray-100 rounded-2xl py-4 px-6 text-gray-900 placeholder:text-gray-400 focus:border-nestle-blue focus:ring-0 transition-all font-bold">
                 </div>
 
-                <div>
+                <div x-data="{ show: false }">
                     <div class="flex items-center justify-between ml-1 mb-2">
                         <label for="password" class="block text-xs font-black text-gray-900 uppercase tracking-widest">Password</label>
                         <a href="#" class="text-[10px] font-black text-nestle-blue uppercase tracking-widest hover:opacity-70 transition-opacity">Forgot Password?</a>
                     </div>
-                    <input id="password" name="password" type="password" required 
-                        placeholder="••••••••"
-                        class="block w-full bg-gray-50 border-2 border-gray-100 rounded-2xl py-4 px-6 text-gray-900 placeholder:text-gray-400 focus:border-nestle-blue focus:ring-0 transition-all font-bold">
+                    <div class="relative">
+                        <input id="password" name="password" :type="show ? 'text' : 'password'" required 
+                            placeholder="••••••••"
+                            class="block w-full bg-gray-50 border-2 border-gray-100 rounded-2xl py-4 px-6 pr-14 text-gray-900 placeholder:text-gray-400 focus:border-nestle-blue focus:ring-0 transition-all font-bold">
+                        <button type="button" @click="show = !show" class="absolute right-4 top-1/2 -translate-y-1/2 p-2 text-gray-400 hover:text-nestle-blue transition-colors">
+                            <template x-if="!show">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.644C3.399 8.049 7.21 5 12 5c4.79 0 8.601 3.049 9.964 6.678.045.122.045.263 0 .385C20.601 15.951 16.79 19 12 19c-4.79 0-8.601-3.049-9.964-6.678Z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                                </svg>
+                            </template>
+                            <template x-if="show">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M3.98 8.223A10.477 10.477 0 0 0 1.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.451 10.451 0 0 1 12 4.5c4.756 0 8.773 3.162 10.065 7.498a10.522 10.522 0 0 1-4.293 5.774M6.228 6.228 3 3m3.228 3.228 3.65 3.65m7.894 7.894L21 21m-3.228-3.228-3.65-3.65m0 0a3 3 0 1 0-4.243-4.243m4.242 4.242L9.88 9.88" />
+                                </svg>
+                            </template>
+                        </button>
+                    </div>
                 </div>
 
                 <div class="pt-2">

@@ -40,7 +40,7 @@
                 @csrf
                 
                 <!-- Step 1: Basic Info -->
-                <div x-show="step === 1" x-transition class="space-y-6">
+                <div id="step1" x-show="step === 1" x-transition class="space-y-6">
                     <div class="grid grid-cols-1 gap-6">
                         <div>
                             <label for="name" class="block text-xs font-black text-gray-900 uppercase tracking-widest ml-1 mb-2">Full Name / Business Name</label>
@@ -63,9 +63,25 @@
                             <textarea id="address" name="address" rows="2" required class="block w-full bg-gray-50 border-2 border-gray-100 rounded-2xl py-4 px-6 text-gray-900 placeholder:text-gray-400 focus:border-nestle-blue focus:ring-0 font-bold" placeholder="Full physical address..."></textarea>
                         </div>
 
-                        <div>
+                        <div x-data="{ show: false }">
                             <label for="password" class="block text-xs font-black text-gray-900 uppercase tracking-widest ml-1 mb-2">Security Key (Password)</label>
-                            <input id="password" name="password" type="password" required class="block w-full bg-gray-50 border-2 border-gray-100 rounded-2xl py-4 px-6 text-gray-900 placeholder:text-gray-400 focus:border-nestle-blue focus:ring-0 font-bold" placeholder="••••••••">
+                            <div class="relative">
+                                <input id="password" name="password" :type="show ? 'text' : 'password'" required 
+                                    class="block w-full bg-gray-50 border-2 border-gray-100 rounded-2xl py-4 px-6 pr-14 text-gray-900 placeholder:text-gray-400 focus:border-nestle-blue focus:ring-0 font-bold" placeholder="••••••••">
+                                <button type="button" @click="show = !show" class="absolute right-4 top-1/2 -translate-y-1/2 p-2 text-gray-400 hover:text-nestle-blue transition-colors">
+                                    <template x-if="!show">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.644C3.399 8.049 7.21 5 12 5c4.79 0 8.601 3.049 9.964 6.678.045.122.045.263 0 .385C20.601 15.951 16.79 19 12 19c-4.79 0-8.601-3.049-9.964-6.678Z" />
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                                        </svg>
+                                    </template>
+                                    <template x-if="show">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M3.98 8.223A10.477 10.477 0 0 0 1.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.451 10.451 0 0 1 12 4.5c4.756 0 8.773 3.162 10.065 7.498a10.522 10.522 0 0 1-4.293 5.774M6.228 6.228 3 3m3.228 3.228 3.65 3.65m7.894 7.894L21 21m-3.228-3.228-3.65-3.65m0 0a3 3 0 1 0-4.243-4.243m4.242 4.242L9.88 9.88" />
+                                        </svg>
+                                    </template>
+                                </button>
+                            </div>
                         </div>
 
                         <div>
@@ -152,7 +168,7 @@
 
                         <div>
                             <label class="block text-xs font-black text-gray-900 uppercase tracking-widest ml-1 mb-2">Primary Distributor Hub</label>
-                            <select name="distributor_id" required class="block w-full bg-gray-50 border-2 border-gray-100 rounded-2xl py-4 px-6 text-gray-900 font-bold focus:border-nestle-blue focus:ring-0">
+                            <select name="distributor_id" :required="selectedRole === 'retailer'" :disabled="selectedRole !== 'retailer'" class="block w-full bg-gray-50 border-2 border-gray-100 rounded-2xl py-4 px-6 text-gray-900 font-bold focus:border-nestle-blue focus:ring-0">
                                 <option value="">Select hub...</option>
                                 @foreach($distributors as $d)
                                     <option value="{{ $d->id }}">{{ $d->name }} ({{ $d->territory }})</option>
@@ -166,7 +182,7 @@
                         <h3 class="text-2xl font-black text-gray-900 border-b-2 border-gray-100 pb-2">Wholesaler Setup</h3>
                         <div>
                             <label class="block text-xs font-black text-gray-900 uppercase tracking-widest ml-1 mb-2">Affiliated Distributor</label>
-                            <select name="distributor_id" class="block w-full bg-gray-50 border-2 border-gray-100 rounded-2xl py-4 px-6 text-gray-900 font-bold focus:border-nestle-blue focus:ring-0">
+                            <select name="distributor_id" :disabled="selectedRole !== 'wholesaler'" class="block w-full bg-gray-50 border-2 border-gray-100 rounded-2xl py-4 px-6 text-gray-900 font-bold focus:border-nestle-blue focus:ring-0">
                                 <option value="">Select your source hub...</option>
                                 @foreach($distributors as $d)
                                     <option value="{{ $d->id }}">{{ $d->name }} ({{ $d->territory }})</option>
@@ -180,7 +196,7 @@
                         <h3 class="text-2xl font-black text-gray-900 border-b-2 border-gray-100 pb-2">Hub Assignment</h3>
                         <div>
                             <label class="block text-xs font-black text-gray-900 uppercase tracking-widest ml-1 mb-2">Operational Territory</label>
-                            <select name="territory" class="block w-full bg-gray-50 border-2 border-gray-100 rounded-2xl py-4 px-6 text-gray-900 font-bold focus:border-nestle-blue focus:ring-0">
+                            <select name="territory" :disabled="selectedRole !== 'distributor'" class="block w-full bg-gray-50 border-2 border-gray-100 rounded-2xl py-4 px-6 text-gray-900 font-bold focus:border-nestle-blue focus:ring-0">
                                 <option>Western Province</option>
                                 <option>Central Province</option>
                                 <option>Southern Province</option>

@@ -81,8 +81,7 @@ class AuthController extends Controller
             ], 201);
         }
 
-        Auth::login($user);
-        return redirect($this->getRedirectUrl($user->role));
+        return redirect()->route('login')->with('success', 'Registration successful! Please sign in to continue.');
     }
 
     public function logout(Request $request)
