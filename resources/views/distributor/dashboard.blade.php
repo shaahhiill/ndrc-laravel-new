@@ -64,50 +64,65 @@
                                 <th class="px-8 py-5 text-[10px] font-black text-gray-400 uppercase tracking-widest">Order</th>
                                 <th class="px-8 py-5 text-[10px] font-black text-gray-400 uppercase tracking-widest">Origin</th>
                                 <th class="px-8 py-5 text-[10px] font-black text-gray-400 uppercase tracking-widest">Retailer</th>
+                                <th class="px-8 py-5 text-[10px] font-black text-gray-400 uppercase tracking-widest">Status</th>
                                 <th class="px-8 py-5 text-[10px] font-black text-gray-400 uppercase tracking-widest">Value</th>
                                 <th class="px-8 py-5 text-[10px] font-black text-gray-400 uppercase tracking-widest text-right whitespace-nowrap">Actions</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-gray-50">
                             @forelse ($orders as $o)
-                                <tr class="hover:bg-gray-50/50">
+                                @php
+                                    $badgeClass = match($o->status) {
+                                        'delivered' => 'bg-green-100 text-green-700',
+                                        'rejected' => 'bg-red-100 text-red-700',
+                                        'dispatched' => 'bg-blue-100 text-blue-700',
+                                        'payment_pending' => 'bg-purple-100 text-purple-700',
+                                        'placed', 'wholesaler_pending', 'distributor_pending' => 'bg-yellow-100 text-yellow-700',
+                                        default => 'bg-indigo-100 text-indigo-700'
+                                    };
+                                @endphp
+                                <tr class="hover:bg-gray-50/50 transition-all">
                                     <td class="px-8 py-6">
                                         <p class="text-sm font-black text-gray-900">#{{ $o->order_number }}</p>
-                                        <p class="text-xs text-gray-400 mt-1">{{ $o->order_date->format('d M, H:i') }}</p>
+                                        <p class="text-[10px] text-gray-400 font-bold mt-1">{{ $o->order_date->format('d M, H:i') }}</p>
                                     </td>
                                     <td class="px-8 py-6">
                                         @if ($o->wholesaler)
-                                            <p class="text-xs font-black text-nestle-brown uppercase">{{ $o->wholesaler->name }}</p>
+                                            <p class="text-[10px] font-black text-nestle-brown uppercase tracking-widest">{{ $o->wholesaler->name }}</p>
                                         @else
-                                            <p class="text-xs font-black text-nestle-blue uppercase">Direct</p>
+                                            <p class="text-[10px] font-black text-nestle-blue uppercase tracking-widest">Direct</p>
                                         @endif
                                     </td>
-                                    <td class="px-8 py-6">{{ $o->retailer->name }}</td>
-                                    <td class="px-8 py-6 font-black text-lg">Rs {{ number_format($o->total_amount, 2) }}</td>
+                                    <td class="px-8 py-6 text-sm font-bold text-gray-700">{{ $o->retailer->name }}</td>
+                                    <td class="px-8 py-6 text-sm">
+                                        <span class="px-3 py-1 rounded-xl text-[10px] font-black uppercase tracking-widest {{ $badgeClass }}">
+                                            {{ $o->status_label }}
+                                        </span>
+                                    </td>
+                                    <td class="px-8 py-6 font-black text-gray-900">Rs {{ number_format($o->total_amount, 2) }}</td>
                                     <td class="px-8 py-6 text-right">
-                                        @if ($o->status === 'distributor_pending')
+                                        @if ($o->status === 'distributor_pending' || $o->status === 'wholesaler_accepted')
                                             <form action="{{ route('orders.update-status', $o->id) }}" method="POST">
                                                 @csrf
                                                 <input type="hidden" name="status" value="distributor_confirmed">
-                                                <button type="submit" class="px-4 py-2 bg-nestle-blue text-white rounded-xl text-xs font-black uppercase">Confirm</button>
-                                            </form>
-                                        @elseif ($o->status === 'wholesaler_accepted')
-                                            <form action="{{ route('orders.update-status', $o->id) }}" method="POST">
-                                                @csrf
-                                                <input type="hidden" name="status" value="distributor_confirmed">
-                                                <button type="submit" class="px-4 py-2 bg-indigo-600 text-white rounded-xl text-xs font-black uppercase">Reserve Stock</button>
+                                                <button type="submit" class="px-4 py-2 bg-nestle-blue text-white rounded-xl text-[10px] font-black uppercase tracking-widest shadow-lg shadow-nestle-blue/20 hover:scale-105 transition-all">Confirm</button>
                                             </form>
                                         @elseif ($o->status === 'distributor_confirmed')
                                             <form action="{{ route('orders.update-status', $o->id) }}" method="POST">
                                                 @csrf
                                                 <input type="hidden" name="status" value="dispatched">
-                                                <button type="submit" class="px-4 py-2 bg-green-600 text-white rounded-xl text-xs font-black uppercase">Dispatch 🚚</button>
+                                                <button type="submit" class="px-4 py-2 bg-green-600 text-white rounded-xl text-[10px] font-black uppercase tracking-widest shadow-lg shadow-green-600/20 hover:scale-105 transition-all">Dispatch 🚚</button>
                                             </form>
+                                        @else
+                                            <span class="text-[10px] font-black text-gray-300 uppercase tracking-widest">Logged</span>
                                         @endif
                                     </td>
                                 </tr>
                             @empty
-                                <tr><td colspan="5" class="px-8 py-16 text-center opacity-30 uppercase font-black">No pending orders</td></tr>
+                                <tr><td colspan="6" class="px-8 py-20 text-center opacity-30 select-none">
+                                    <div class="text-5xl mb-4">📭</div>
+                                    <p class="uppercase font-black tracking-[0.2em] text-sm">No transaction history found</p>
+                                </td></tr>
                             @endforelse
                         </tbody>
                     </table>

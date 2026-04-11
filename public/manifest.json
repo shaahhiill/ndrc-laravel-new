@@ -1,0 +1,19 @@
+{
+  "short_name": "NDRC",
+  "name": "Nestlé Direct Retail Channel Platform",
+  "description": "A digital information layer mapping the Nestlé Lanka supply ecosystem.",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "type": "image/svg+xml",
+      "sizes": "any",
+      "purpose": "any maskable"
+    }
+  ],
+  "start_url": "/?source=pwa",
+  "background_color": "#F5F3F0",
+  "theme_color": "#0085C3",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "scope": "/"
+}

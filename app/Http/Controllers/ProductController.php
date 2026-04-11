@@ -22,6 +22,10 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
+        if (auth()->user()->role !== 'nestle') {
+            abort(403, 'Only Nestlé administrators can add products.');
+        }
+
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'sku' => 'required|string|unique:products,sku',
@@ -34,7 +38,11 @@ class ProductController extends Controller
 
         $product = Product::create($validated);
 
-        return response()->json($product, 201);
+        if ($request->wantsJson()) {
+            return response()->json($product, 201);
+        }
+
+        return redirect()->route('nestle.products')->with('success', "Product '{$product->name}' added successfully to the unified catalogue!");
     }
 
     /**

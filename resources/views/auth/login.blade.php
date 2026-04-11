@@ -33,7 +33,13 @@
             @endif
 
             @if ($errors->any())
-                <!-- Error Alert ... -->
+                <div class="mb-6 bg-red-50 border border-red-200 p-4 rounded-2xl">
+                    <ul class="list-disc list-inside text-sm font-bold text-red-600 pl-2">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
             @endif
 
             <form action="{{ route('login.post') }}" method="POST" class="space-y-6">

@@ -2,17 +2,6 @@
 
 @section('content')
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-    @if (session('success'))
-        <div class="mb-4 bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-xl text-sm font-bold animate-pulse">
-            ✅ {{ session('success') }}
-        </div>
-    @endif
-    @if (session('error'))
-        <div class="mb-4 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl text-sm font-bold">
-            🚨 {{ session('error') }}
-        </div>
-    @endif
-
     <div class="md:flex md:items-center md:justify-between mb-8">
         <div class="min-w-0 flex-1">
             <h2 class="text-3xl font-black text-gray-900 tracking-tight">Retailer Dashboard</h2>
@@ -40,6 +29,7 @@
                                 'delivered' => 'bg-green-100 text-green-700',
                                 'rejected' => 'bg-red-100 text-red-700',
                                 'dispatched' => 'bg-blue-100 text-blue-700',
+                                'payment_pending' => 'bg-purple-100 text-purple-700',
                                 'placed', 'wholesaler_pending', 'distributor_pending' => 'bg-yellow-100 text-yellow-700',
                                 default => 'bg-gray-100 text-gray-700'
                             };
@@ -54,12 +44,17 @@
                                     </div>
                                 </div>
                                 <span class="px-3 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-widest {{ $badgeClass }}">
-                                    {{ str_replace('_', ' ', $o->status) }}
+                                    {{ $o->status_label }}
                                 </span>
                             </div>
                             <div class="flex justify-between items-end">
                                 <div>
                                     <p class="text-xs font-bold text-gray-500">Scheduled: {{ $o->distributor->name }}</p>
+                                    @if($o->status === 'payment_pending')
+                                        <a href="{{ route('order.checkout', $o) }}" class="mt-3 inline-flex items-center gap-2 bg-nestle-blue text-white px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest shadow-lg hover:scale-105 transition-all">
+                                            Complete Payment 💳
+                                        </a>
+                                    @endif
                                     <p class="text-[10px] text-gray-400 font-bold mt-1 uppercase">{{ $o->order_date->format('d M, Y') }}</p>
                                 </div>
                                 <div class="text-right">
@@ -124,6 +119,18 @@
                     @endif
                 </div>
                 <div class="absolute -right-10 -bottom-10 w-32 h-32 bg-nestle-blue/5 rounded-full blur-3xl group-hover:scale-110 transition-transform"></div>
+            </div>
+
+            <div class="bg-indigo-600 rounded-[2.5rem] p-8 text-white shadow-2xl shadow-indigo-200 relative overflow-hidden group">
+                <div class="relative z-10">
+                    <h3 class="text-sm font-black mb-4 tracking-tight leading-tight flex items-center gap-2">
+                        <span class="h-6 w-6 bg-white/20 rounded-lg flex items-center justify-center text-xs">✨</span>
+                        AI Smart Insights
+                    </h3>
+                    <p class="text-white/70 text-sm font-medium leading-relaxed mb-6">Stocking out on MILO? Our AI predicts you'll need a refill in 3 days.</p>
+                    <a href="/retailer/smart-orders" class="inline-flex items-center gap-2 bg-white text-indigo-600 px-6 py-3 rounded-2xl text-xs font-black uppercase shadow-lg hover:scale-105 transition-all">View Recommendations</a>
+                </div>
+                <div class="absolute -right-10 -bottom-10 w-32 h-32 bg-white/10 rounded-full blur-3xl"></div>
             </div>
 
             <div class="bg-nestle-blue rounded-[2.5rem] p-8 text-white shadow-2xl shadow-nestle-blue/20 relative overflow-hidden">

@@ -43,7 +43,7 @@
                             <td class="px-8 py-6 text-lg font-black text-gray-900">Rs {{ number_format($o->total_amount, 2) }}</td>
                             <td class="px-8 py-6">
                                 <span class="px-3 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-widest {{ $badgeClass }}">
-                                    {{ str_replace('_', ' ', $o->status) }}
+                                    {{ $o->status_label }}
                                 </span>
                             </td>
                         </tr>

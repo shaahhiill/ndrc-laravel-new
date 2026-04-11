@@ -35,6 +35,15 @@
                     <span class="text-[10px] uppercase tracking-widest text-gray-900">Your Role</span>
                 </div>
             </div>
+            @if ($errors->any())
+                <div class="mb-6 bg-red-50 border border-red-200 p-4 rounded-2xl">
+                    <ul class="list-disc list-inside text-sm font-bold text-red-600 pl-2">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
 
             <form id="registerForm" action="{{ route('register.post') }}" method="POST" class="space-y-6">
                 @csrf

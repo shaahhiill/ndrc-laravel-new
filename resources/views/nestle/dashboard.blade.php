@@ -8,7 +8,8 @@
             <p class="text-sm text-gray-400 font-black uppercase tracking-widest mt-1">National Distribution & Retail Channel Analytics</p>
         </div>
         <div class="flex gap-4">
-            <button class="px-6 py-3 bg-white border border-gray-100 rounded-2xl text-xs font-black uppercase tracking-widest text-gray-600 hover:shadow-md transition-all">Download Report 📊</button>
+            <a href="{{ route('nestle.products') }}" class="px-6 py-3 bg-nestle-blue rounded-2xl text-[10px] font-black uppercase tracking-widest text-white shadow-xl shadow-nestle-blue/20 hover:scale-[1.02] transition-all">Manage Catalogue 📦</a>
+            <button class="px-6 py-3 bg-white border border-gray-100 rounded-2xl text-[10px] font-black uppercase tracking-widest text-gray-600 hover:shadow-md transition-all">Download Report 📊</button>
         </div>
     </div>
 
@@ -74,7 +75,7 @@
                             <td class="px-8 py-6 font-black text-gray-900">Rs {{ number_format($o->total_amount, 2) }}</td>
                             <td class="px-8 py-6">
                                 <span class="px-3 py-1 rounded-xl text-[10px] font-black uppercase tracking-widest {{ $badgeClass }}">
-                                    {{ str_replace('_', ' ', $o->status) }}
+                                    {{ $o->status_label }}
                                 </span>
                             </td>
                         </tr>

@@ -2,152 +2,165 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>{{ config('app.name', 'Nestlé NDRC - Premium Distribution Platform') }}</title>
-    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nestlé NDRC - National Distribution & Retail Channel</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
-                        'nestle-brown': '#63513D',
                         'nestle-blue': '#0085C3',
-                        'nestle-bg': '#F5F3F0',
-                    }
+                        'nestle-brown': '#63513D',
+                        'nestle-gold': '#C49500',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
                 }
             }
         }
     </script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
-        body { font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
-        
-        .hero-pattern {
-            background-image: radial-gradient(circle at 2px 2px, rgba(0, 133, 195, 0.05) 1px, transparent 0);
-            background-size: 32px 32px;
-        }
-
-        .blob-1 {
-            background: linear-gradient(135deg, #0085C3, #63513D);
-            border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
-            animation: blob-bounce 10s infinite alternate ease-in-out;
-        }
-        
-        .blob-2 {
-            background: linear-gradient(135deg, #F5F3F0, #0085C3);
-            border-radius: 60% 40% 30% 70% / 50% 60% 40% 50%;
-            animation: blob-bounce 12s infinite alternate-reverse ease-in-out;
-        }
-
-        @keyframes blob-bounce {
-            0% { transform: scale(1) translate(0, 0) rotate(0deg); }
-            50% { transform: scale(1.1) translate(20px, -20px) rotate(10deg); }
-            100% { transform: scale(0.9) translate(-20px, 20px) rotate(-10deg); }
-        }
-
-        /* Glassmorphism nav */
-        .glass-nav {
-            background: rgba(255, 255, 255, 0.7);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-        }
+        .hero-overlay { background: linear-gradient(90deg, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.4) 100%); }
     </style>
 </head>
-<body class="bg-gray-50 bg-nestle-bg text-gray-900 overflow-x-hidden antialiased">
-    
-    <!-- Background Animation -->
-    <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden">
-        <div class="absolute top-[-10%] left-[-10%] w-[60vh] h-[60vh] blob-1 opacity-20 blur-[100px]"></div>
-        <div class="absolute bottom-[-10%] right-[-10%] w-[50vh] h-[50vh] blob-2 opacity-20 blur-[80px]"></div>
-        <div class="absolute inset-0 hero-pattern"></div>
-    </div>
-
-    <!-- Navbar -->
-    <nav class="fixed w-full z-50 glass-nav border-b border-white/40">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-20">
-                <div class="flex items-center gap-3">
-                    <div class="h-10 w-10 bg-gradient-to-br from-nestle-blue to-blue-700 rounded-xl flex items-center justify-center shadow-lg shadow-nestle-blue/30">
-                        <svg viewBox="0 0 100 80" class="w-6 h-6 text-white fill-current">
-                            <path d="M75,55 C78,55 80,53 80,50 L80,30 C80,27 78,25 75,25 L25,25 C22,25 20,27 20,30 L20,50 C20,53 22,55 25,55 L35,55 L32,65 L68,65 L65,55 L75,55 Z M50,15 C55,15 58,18 58,22 C58,26 55,29 50,29 C45,29 42,26 42,22 C42,18 45,15 50,15 Z M30,40 C33,40 35,38 35,35 C35,32 33,30 30,30 C27,30 25,32 25,35 C25,38 27,40 30,40 Z M70,40 C73,40 75,38 75,35 C75,32 73,30 70,30 C67,30 65,32 65,35 C65,38 67,40 70,40 Z"/>
-                        </svg>
-                    </div>
-                    <span class="text-xl font-black tracking-tighter uppercase">Nestlé <span class="text-nestle-blue">NDRC</span></span>
-                </div>
-                
-                <div class="flex items-center gap-4">
-                    @auth
-                        <a href="{{ url('/dashboard') }}" class="text-sm font-bold text-gray-700 hover:text-nestle-blue transition-colors">Portals</a>
-                    @else
-                        <a href="{{ route('login') }}" class="hidden sm:block text-sm font-bold text-gray-600 hover:text-gray-900 transition-colors">Sign In</a>
-                        <a href="{{ route('register') }}" class="bg-gray-900 text-white px-6 py-2.5 rounded-2xl text-sm font-black shadow-lg shadow-gray-900/20 hover:scale-105 hover:bg-nestle-blue hover:shadow-nestle-blue/30 transition-all uppercase tracking-wider">
-                            Join Network
-                        </a>
-                    @endauth
-                </div>
+<body class="bg-gray-50 text-gray-900 overflow-x-hidden">
+    <!-- Top Navigation -->
+    <nav class="absolute top-0 left-0 right-0 z-50 px-6 py-6" x-data="{ mobileMenu: false }">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <div class="flex items-center gap-4">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/b/b1/Nestl%C3%A9_Logo.svg" alt="Nestle" class="h-8 brightness-0 invert">
+                <div class="h-6 w-px bg-white/20 hidden sm:block"></div>
+                <span class="text-white font-bold tracking-tight text-lg hidden sm:block uppercase">NDRC Platform</span>
             </div>
+            
+            <div class="hidden md:flex items-center gap-8">
+                <a href="#features" class="text-white/80 hover:text-white transition-colors text-sm font-semibold uppercase tracking-wider">Features</a>
+                <a href="#network" class="text-white/80 hover:text-white transition-colors text-sm font-semibold uppercase tracking-wider">Network</a>
+                <div class="h-6 w-px bg-white/10 mx-2"></div>
+                @auth
+                    <a href="{{ url('/dashboard') }}" class="bg-white text-nestle-blue px-6 py-2.5 rounded-full font-bold shadow-lg hover:scale-105 transition-all">Dashboard</a>
+                @else
+                    <a href="{{ route('login') }}" class="text-white font-bold text-sm hover:underline">Sign In</a>
+                    <a href="{{ route('register') }}" class="bg-nestle-blue text-white px-8 py-3 rounded-full font-bold shadow-xl shadow-nestle-blue/20 hover:bg-blue-600 transition-all uppercase text-xs tracking-widest">Join Network</a>
+                @endauth
+            </div>
+
+            <button @click="mobileMenu = !mobileMenu" class="md:hidden text-white"><svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16" stroke-width="2"></path></svg></button>
+        </div>
+        
+        <!-- Mobile Menu -->
+        <div x-show="mobileMenu" class="md:hidden absolute top-20 left-4 right-4 bg-white rounded-3xl p-8 shadow-2xl flex flex-col gap-6" x-cloak>
+            <a href="{{ route('login') }}" class="text-gray-900 font-bold text-lg border-b pb-4">Sign In</a>
+            <a href="{{ route('register') }}" class="bg-nestle-blue text-white text-center py-4 rounded-2xl font-bold">Join Network</a>
         </div>
     </nav>
 
-    <!-- Main Hero -->
-    <main class="relative z-10 pt-32 pb-16 sm:pt-40 sm:pb-24 lg:pb-32 flex flex-col items-center justify-center min-h-[90vh]">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            
-            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/60 border border-white/80 shadow-sm backdrop-blur-sm mb-8 animate-bounce" style="animation-duration: 3s;">
-                <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
-                <span class="text-xs font-black text-gray-600 uppercase tracking-widest">Global Supply Chain Live</span>
-            </div>
-
-            <h1 class="text-5xl sm:text-6xl lg:text-8xl font-black tracking-tighter text-gray-900 mb-6 leading-[1.1]">
-                Empowering the<br>
-                <span class="text-transparent bg-clip-text bg-gradient-to-r from-nestle-blue to-teal-400">Future of Retail.</span>
-            </h1>
-            
-            <p class="max-w-2xl mx-auto text-lg sm:text-2xl font-medium text-gray-600 mb-10 leading-relaxed">
-                Connect directly into the Nestlé digital distribution pipeline. Streamline ordering, track logistics, and grow your local business seamlessly.
-            </p>
-
-            <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
-                <a href="{{ route('register') }}" class="w-full sm:w-auto px-8 py-5 rounded-3xl bg-gradient-to-r from-nestle-blue to-blue-600 text-white font-black text-lg shadow-2xl shadow-nestle-blue/30 hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center gap-3 group">
-                    Become a Partner
-                    <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
-                </a>
-                <a href="{{ route('login') }}" class="w-full sm:w-auto px-8 py-5 rounded-3xl bg-white text-gray-900 font-black text-lg shadow-xl shadow-gray-200/50 hover:shadow-2xl hover:scale-[1.02] active:scale-95 transition-all border border-gray-100 flex items-center justify-center">
-                    Access Portal
-                </a>
-            </div>
-            
-            <!-- System Stats -->
-            <div class="mt-20 grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-8 max-w-4xl mx-auto">
-                <div class="bg-white/50 backdrop-blur-md p-6 rounded-3xl border border-white/60 shadow-lg">
-                    <p class="text-4xl font-black text-gray-900">4.9M</p>
-                    <p class="text-[10px] font-black text-gray-500 uppercase tracking-widest mt-1">Orders Processed</p>
+    <!-- Hero Section -->
+    <header class="relative h-[90vh] flex items-center overflow-hidden">
+        <img src="{{ asset('images/home-hero.jpg') }}" alt="Nestle Logistics" class="absolute inset-0 w-full h-full object-cover">
+        <div class="absolute inset-0 hero-overlay"></div>
+        
+        <div class="relative z-10 max-w-7xl mx-auto px-6 lg:px-8 w-full">
+            <div class="max-w-2xl">
+                <div class="inline-flex items-center gap-2 px-3 py-1 bg-nestle-blue/20 border border-nestle-blue/30 rounded-lg text-nestle-blue mb-6">
+                    <span class="w-2 h-2 rounded-full bg-nestle-blue animate-ping"></span>
+                    <span class="text-[10px] font-black uppercase tracking-widest text-white">Official B2B Channel</span>
                 </div>
-                <div class="bg-white/50 backdrop-blur-md p-6 rounded-3xl border border-white/60 shadow-lg">
-                    <p class="text-4xl font-black text-gray-900">99.9%</p>
-                    <p class="text-[10px] font-black text-gray-500 uppercase tracking-widest mt-1">Uptime SLA</p>
-                </div>
-                <div class="bg-white/50 backdrop-blur-md p-6 rounded-3xl border border-white/60 shadow-lg">
-                    <p class="text-4xl font-black text-gray-900">15k+</p>
-                    <p class="text-[10px] font-black text-gray-500 uppercase tracking-widest mt-1">Active Retailers</p>
-                </div>
-                <div class="bg-white/50 backdrop-blur-md p-6 rounded-3xl border border-white/60 shadow-lg">
-                    <p class="text-4xl font-black text-gray-900">300+</p>
-                    <p class="text-[10px] font-black text-gray-500 uppercase tracking-widest mt-1">Regional Hubs</p>
+                <h1 class="text-5xl lg:text-7xl font-extrabold text-white tracking-tighter leading-none mb-6">
+                    Powering <br/>
+                    <span class="text-nestle-blue">Distribution</span> <br/>
+                    Intelligence.
+                </h1>
+                <p class="text-xl text-white/70 font-medium mb-10 leading-relaxed max-w-lg">
+                    Unlocking end-to-end visibility for the Nestlé Direct Retail Channel. Streamlined ordering, predictive stock management, and unified logistics.
+                </p>
+                <div class="flex flex-col sm:flex-row items-center gap-4">
+                    <a href="{{ route('register') }}" class="w-full sm:w-auto px-10 py-5 bg-nestle-blue text-white rounded-2xl font-bold hover:bg-blue-600 transition-all shadow-2xl shadow-nestle-blue/40 text-center uppercase tracking-widest text-sm">Get Started Now</a>
+                    <a href="#features" class="w-full sm:w-auto px-10 py-5 bg-white/10 backdrop-blur-md text-white border border-white/20 rounded-2xl font-bold hover:bg-white hover:text-gray-900 transition-all text-center uppercase tracking-widest text-sm">Learn More</a>
                 </div>
             </div>
-
         </div>
-    </main>
+    </header>
 
-    <!-- Footer -->
-    <footer class="relative z-10 py-10 border-t border-gray-200/50 bg-white/40 backdrop-blur-xl">
-        <div class="max-w-7xl mx-auto px-4 text-center">
-            <p class="text-gray-400 text-sm font-bold uppercase tracking-widest">
-                © {{ date('Y') }} Nestlé NDRC Platform. All Systems Operational.
-            </p>
+    <!-- Feature Section -->
+    <section id="features" class="py-24 bg-white relative">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+            <div class="flex flex-col lg:flex-row items-end justify-between gap-8 mb-16">
+                <div class="max-w-2xl">
+                    <h2 class="text-nestle-blue font-black uppercase tracking-widest text-xs mb-4">Core Capabilities</h2>
+                    <h3 class="text-4xl font-extrabold text-gray-900 tracking-tight">The Digital Backbone of <br/>Nestlé Distribution.</h3>
+                </div>
+                <div class="lg:mb-2 text-gray-500 font-medium max-w-sm">Every order placed through NDRC contributes to a national data layer for optimized inventory flow.</div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+                <div class="p-10 rounded-[2.5rem] bg-gray-50 border border-gray-100 hover:shadow-2xl transition-all group">
+                    <div class="w-16 h-16 bg-white rounded-2xl flex items-center justify-center text-3xl shadow-sm mb-8 group-hover:scale-110 transition-transform">📦</div>
+                    <h4 class="text-xl font-bold mb-4 text-gray-900">Seamless Bulk Ordering</h4>
+                    <p class="text-gray-500 leading-relaxed">Direct integration with distributor inventory. Order by Case, Carton, or Crate with real-time stock verification.</p>
+                </div>
+                <div class="p-10 rounded-[2.5rem] bg-nestle-blue text-white shadow-2xl shadow-nestle-blue/20 hover:-translate-y-2 transition-transform">
+                    <div class="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center text-3xl mb-8">✨</div>
+                    <h4 class="text-xl font-bold mb-4">Smart Recommendations</h4>
+                    <p class="text-white/70 leading-relaxed text-sm">AI-driven insights that suggest upcoming stock needs based on your unique purchase cycles and seasonal trends.</p>
+                    <div class="mt-8 pt-6 border-t border-white/10 flex items-center gap-4 text-[10px] font-black uppercase tracking-widest">
+                        <span>Predictive</span>
+                        <div class="h-1 w-12 bg-white/20 rounded-full overflow-hidden"><div class="h-full bg-white w-2/3"></div></div>
+                        <span>Accuracy 88%</span>
+                    </div>
+                </div>
+                <div class="p-10 rounded-[2.5rem] bg-gray-50 border border-gray-100 hover:shadow-2xl transition-all group">
+                    <div class="w-16 h-16 bg-white rounded-2xl flex items-center justify-center text-3xl shadow-sm mb-8 group-hover:scale-110 transition-transform">💳</div>
+                    <h4 class="text-xl font-bold mb-4 text-gray-900">Secure Settlement</h4>
+                    <p class="text-gray-500 leading-relaxed font-normal">Choose between integrated Stripe card payments for instant processing or flexible Cash on Delivery workflows.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Network Section -->
+    <section id="network" class="py-24 bg-gray-900 text-white overflow-hidden relative">
+        <div class="absolute right-0 top-0 w-1/2 h-full opacity-10 pointer-events-none">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/b/b1/Nestl%C3%A9_Logo.svg" alt="" class="w-full h-full object-contain">
+        </div>
+        <div class="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
+                <div>
+                    <h3 class="text-4xl font-extrabold tracking-tighter mb-8 leading-tight italic">"Ensuring Nestlé products are always available at the point of need."</h3>
+                    <p class="text-gray-400 text-lg mb-12 font-medium">The NDRC network connects thousands of retailers and wholesalers across Sri Lanka to regional distribution hubs, creating a unified supply chain.</p>
+                    <div class="flex gap-12">
+                        <div>
+                            <p class="text-4xl font-black mb-1">99%</p>
+                            <p class="text-[10px] font-black text-nestle-blue uppercase tracking-widest">Uptime Record</p>
+                        </div>
+                        <div class="h-12 w-px bg-white/10"></div>
+                        <div>
+                            <p class="text-4xl font-black mb-1">2k+</p>
+                            <p class="text-[10px] font-black text-nestle-blue uppercase tracking-widest">Daily Transactions</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white/5 border border-white/10 p-2 rounded-[3.5rem] shadow-3xl">
+                    <div class="bg-gray-800 rounded-[3rem] overflow-hidden p-12">
+                        <h4 class="text-xl font-bold mb-6">Ready to scale?</h4>
+                        <p class="text-gray-400 mb-8 text-sm">Join the digital revolution in Nestlé's route-to-market operations today.</p>
+                        <a href="{{ route('register') }}" class="block w-full text-center bg-white text-gray-900 py-5 rounded-2xl font-black uppercase tracking-widest text-xs hover:bg-nestle-blue hover:text-white transition-all">Become a Partner</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Simple Footer -->
+    <footer class="py-12 bg-white border-t">
+        <div class="max-w-7xl mx-auto px-6 text-center">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/b/b1/Nestl%C3%A9_Logo.svg" alt="Nestle" class="h-6 mx-auto mb-8 opacity-30 grayscale">
+            <p class="text-gray-400 text-[10px] font-black uppercase tracking-[0.3em]">Nestlé Lanka PLC — Distribution Technology Division</p>
+            <p class="text-gray-400 text-[10px] mt-4">© {{ date('Y') }} Official Direct Retail Channel Portal. All rights reserved.</p>
         </div>
     </footer>
 </body>

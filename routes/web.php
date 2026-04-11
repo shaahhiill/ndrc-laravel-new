@@ -60,6 +60,7 @@ Route::middleware('auth')->group(function () {
             ->get();
         return view('retailer.orders', compact('orders'));
     })->name('retailer.orders');
+    Route::get('/retailer/smart-orders', [\App\Http\Controllers\RecommendationController::class, 'index'])->name('retailer.smart-orders');
     Route::post('/retailer/join-network', [NetworkController::class, 'joinRequest'])->name('network.join');
     Route::post('/orders', [OrderController::class, 'placeOrder'])->name('orders');
     Route::get('/wholesaler/dashboard', function () {
@@ -73,7 +74,6 @@ Route::middleware('auth')->group(function () {
         $orders = \App\Models\Order::with('retailer')
             ->where('wholesaler_id', $user->id)
             ->latest()
-            ->limit(10)
             ->get();
 
         return view('wholesaler.dashboard', compact('user', 'stats', 'orders'));
@@ -84,8 +84,6 @@ Route::middleware('auth')->group(function () {
         
         $orders = \App\Models\Order::with(['retailer', 'wholesaler'])
             ->where('distributor_id', $user->id)
-            ->whereIn('status', ['distributor_pending', 'distributor_confirmed'])
-            ->orderBy('status')
             ->latest()
             ->get();
 
@@ -105,6 +103,20 @@ Route::middleware('auth')->group(function () {
     })->name('distributor.dashboard');
 
     Route::post('/orders/{order}/status', [\App\Http\Controllers\OrderController::class, 'statusUpdate'])->name('orders.update-status');
+
+    // Payment & Checkout Flow
+    Route::get('/checkout/{order}', [\App\Http\Controllers\StripeController::class, 'checkout'])->name('order.checkout');
+    Route::post('/payment/process/{order}', [\App\Http\Controllers\StripeController::class, 'processPayment'])->name('stripe.process');
+    Route::post('/payment/cash/{order}', [\App\Http\Controllers\StripeController::class, 'confirmCash'])->name('payment.confirm-cash');
+    Route::get('/payment/success', [\App\Http\Controllers\StripeController::class, 'success'])->name('stripe.success');
+    Route::get('/payment/cancel', [\App\Http\Controllers\StripeController::class, 'cancel'])->name('stripe.cancel');
+
+    // Nestle Product Management
+    Route::get('/nestle/products', function () {
+        $products = \App\Models\Product::orderBy('category')->orderBy('name')->get();
+        return view('nestle.products', compact('products'));
+    })->name('nestle.products');
+    Route::post('/nestle/products', [App\Http\Controllers\ProductController::class, 'store'])->name('nestle.products.store');
 
     Route::get('/nestle/dashboard', function () {
         $stats = [

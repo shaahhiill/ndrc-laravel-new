@@ -15,6 +15,8 @@ class Order extends Model
         'order_date',
         'scheduled_dispatch_date',
         'total_amount',
+        'payment_method',
+        'stripe_session_id',
         'notes',
     ];
 
@@ -41,5 +43,21 @@ class Order extends Model
     public function items()
     {
         return $this->hasMany(OrderItem::class);
+    }
+
+    public function getStatusLabelAttribute()
+    {
+        return match($this->status) {
+            'placed' => 'Order Placed',
+            'payment_pending' => 'Awaiting Payment',
+            'wholesaler_pending' => 'Pending Wholesaler Review',
+            'wholesaler_accepted' => 'Approved by Wholesaler',
+            'distributor_pending' => 'Pending Distributor Review',
+            'distributor_confirmed' => 'Confirmed by Distributor',
+            'dispatched' => 'Dispatched (In Transit)',
+            'delivered' => 'Delivered',
+            'rejected' => 'Rejected',
+            default => str_replace('_', ' ', ucfirst($this->status)),
+        };
     }
 }

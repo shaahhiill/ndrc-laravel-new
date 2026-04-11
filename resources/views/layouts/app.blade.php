@@ -9,11 +9,13 @@
     <!-- PWA & Mobile Optimization -->
     <link rel="manifest" href="/manifest.json">
     <meta name="theme-color" content="#002B5C">
-    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         tailwind.config = {
             theme: {
@@ -61,6 +63,7 @@
                             'retailer' => [
                                 ['label' => 'Dashboard', 'url' => '/retailer/dashboard'],
                                 ['label' => 'New Order', 'url' => '/retailer/place-order'],
+                                ['label' => 'Smart Picks ✨', 'url' => '/retailer/smart-orders'],
                                 ['label' => 'History', 'url' => '/retailer/orders']
                             ],
                             'wholesaler' => [
@@ -132,6 +135,32 @@
     </nav>
     @endauth
 
+    @if (session('success') || session('error') || $errors->any())
+    <div x-data="{ show: true }" x-show="show" x-init="setTimeout(() => show = false, 5000)" class="fixed bottom-10 right-10 z-[100] max-w-sm w-full">
+        @if (session('success'))
+        <div class="bg-green-600 text-white p-6 rounded-[2rem] shadow-2xl flex items-center gap-4 border-2 border-white/20 backdrop-blur-md">
+            <div class="h-10 w-10 bg-white/20 rounded-xl flex items-center justify-center text-xl">✅</div>
+            <div class="flex-1">
+                <p class="font-black text-sm uppercase tracking-widest">Success</p>
+                <p class="text-xs font-bold text-white/80 mt-1">{{ session('success') }}</p>
+            </div>
+        </div>
+        @endif
+
+        @if (session('error') || $errors->any())
+        <div class="bg-red-600 text-white p-6 rounded-[2rem] shadow-2xl flex items-center gap-4 border-2 border-white/20 backdrop-blur-md">
+            <div class="h-10 w-10 bg-white/20 rounded-xl flex items-center justify-center text-xl">⚠️</div>
+            <div class="flex-1">
+                <p class="font-black text-sm uppercase tracking-widest">Attention Needed</p>
+                <p class="text-xs font-bold text-white/80 mt-1">
+                    @if(session('error')) {{ session('error') }} @else Please check the form for mistakes. @endif
+                </p>
+            </div>
+        </div>
+        @endif
+    </div>
+    @endif
+
     <main class="relative">
         @yield('content')
     </main>
@@ -143,5 +172,18 @@
     </footer>
 
     @stack('scripts')
+    
+    <!-- Service Worker Registration for PWA -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js').then(registration => {
+                    console.log('SW registered: ', registration);
+                }).catch(registrationError => {
+                    console.log('SW registration failed: ', registrationError);
+                });
+            });
+        }
+    </script>
 </body>
 </html>

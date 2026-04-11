@@ -14,16 +14,33 @@
                     </ol>
                 </nav>
                 <h1 class="text-4xl font-extrabold text-gray-900 tracking-tight">Product Catalogue</h1>
+                <p class="text-gray-500 mt-2 font-medium">B2B Wholesale Portal — Select bulk cases and cartons below.</p>
             </div>
             
             <div class="bg-white p-4 rounded-2xl border border-gray-100 shadow-sm flex items-center gap-4">
                 <div class="h-12 w-12 bg-nestle-blue/10 rounded-xl flex items-center justify-center text-nestle-blue">🏢</div>
                 <div>
                     <p class="text-xs font-bold text-gray-400 uppercase tracking-widest leading-none mb-1">Pricing Mode</p>
-                    <p class="text-nestle-brown font-bold text-sm">Distributor Rates</p>
+                    <p class="text-nestle-brown font-bold text-sm">Distributor Rates (Bulk)</p>
                 </div>
             </div>
         </div>
+
+        <!-- Featured Banner -->
+        <div class="mb-12 rounded-[3rem] overflow-hidden relative h-64 shadow-2xl bg-nestle-blue">
+            <img src="{{ asset('images/catalog-banner.jpg') }}" alt="Nestle Products" class="absolute inset-0 w-full h-full object-cover opacity-60">
+            <div class="absolute inset-0 bg-gradient-to-r from-nestle-blue/80 to-transparent flex flex-col justify-center px-12 text-white">
+                <h2 class="text-3xl font-black mb-2 uppercase tracking-tighter">Supply Chain replenishment</h2>
+                <p class="text-lg font-bold opacity-90 max-w-md">Official B2B fulfillment channel for certified Nestlé Retailers.</p>
+            </div>
+        </div>
+
+        @if($errors->has('items.*.quantity'))
+            <div class="mb-8 p-4 bg-red-50 border border-red-100 rounded-2xl flex items-center gap-3 text-red-600 font-bold text-sm">
+                <span>⚠️</span>
+                <span>Please ensure at least one product has a quantity greater than zero.</span>
+            </div>
+        @endif
 
         <form id="orderForm" action="{{ route('orders') }}" method="POST">
             @csrf
@@ -52,6 +69,7 @@
                                     @case('Noodles') 🍜 @break
                                     @case('Confectionery') 🍫 @break
                                     @case('Culinary') 🥣 @break
+                                    @case('Cereals') 🥣 @break
                                     @default 📦
                                 @endswitch
                             </div>
@@ -59,15 +77,19 @@
                             <!-- Details -->
                             <div class="flex-1 text-center sm:text-left">
                                 <h3 class="text-lg font-bold text-gray-900 group-hover:text-nestle-blue transition-colors">{{ $p->name }}</h3>
-                                <div class="mt-2 flex flex-wrap justify-center sm:justify-start items-center gap-2">
-                                    <span class="px-2 py-1 bg-gray-100 text-gray-600 rounded-lg text-[10px] font-bold uppercase tracking-widest">{{ $p->sku }}</span>
-                                    <span class="px-2 py-1 bg-nestle-blue/5 text-nestle-blue rounded-lg text-[10px] font-bold uppercase tracking-widest">{{ $p->unit }}</span>
+                                <p class="text-xs text-gray-500 mt-1 line-clamp-1">{{ $p->description }}</p>
+                                <div class="mt-3 flex flex-wrap justify-center sm:justify-start items-center gap-2">
+                                    <span class="px-2 py-1 bg-gray-100 text-gray-600 rounded-lg text-[10px] font-black uppercase tracking-widest">{{ $p->sku }}</span>
+                                    <span class="px-2 py-1 bg-nestle-blue/5 text-nestle-blue rounded-lg text-[10px] font-black uppercase tracking-widest">BULK {{ $p->unit }}</span>
                                 </div>
                             </div>
 
                             <!-- Pricing & Qty -->
                             <div class="flex flex-col items-center sm:items-end gap-3 min-w-[150px]">
-                                <p class="text-xl font-black text-nestle-brown">Rs {{ number_format($p->price, 2) }}</p>
+                                <div class="text-right">
+                                    <p class="text-xl font-black text-nestle-brown leading-none">Rs {{ number_format($p->price, 2) }}</p>
+                                    <p class="text-[9px] font-bold text-gray-400 uppercase tracking-widest mt-1">Wholesale Rate</p>
+                                </div>
                                 
                                 <div class="flex items-center bg-gray-50 rounded-2xl p-1 border border-gray-100 shadow-inner">
                                     <button type="button" @click="updateQty({{ $p->id }}, -1)" class="w-10 h-10 rounded-xl flex items-center justify-center text-gray-400 hover:text-nestle-brown hover:bg-white transition-all font-black text-xl">-</button>
@@ -88,7 +110,7 @@
                     <div class="bg-white rounded-[2.5rem] border border-gray-100 shadow-2xl sticky top-28 overflow-hidden">
                         <div class="bg-nestle-brown p-8 text-white">
                             <h3 class="text-2xl font-black tracking-tight">Order Summary</h3>
-                            <p class="text-white/60 text-sm mt-1">Direct fulfillment chain.</p>
+                            <p class="text-white/60 text-sm mt-1">Bulk distribution pricing applied.</p>
                         </div>
                         <div class="p-8 space-y-6">
                             <div class="space-y-4 max-h-[40vh] overflow-y-auto no-scrollbar">
@@ -97,7 +119,7 @@
                                         <div class="flex-1">
                                             <p class="text-sm font-black text-gray-900 leading-tight" x-text="getProduct(id).name"></p>
                                             <p class="text-[10px] text-gray-500 font-bold uppercase tracking-widest mt-1">
-                                                <span x-text="qty"></span> x Rs <span x-text="getProduct(id).price.toFixed(2)"></span>
+                                                <span x-text="qty"></span> x <span x-text="getProduct(id).unit"></span>
                                             </p>
                                         </div>
                                         <div class="text-right">
@@ -105,21 +127,32 @@
                                         </div>
                                     </div>
                                 </template>
-                                <div x-show="Object.values(cart).reduce((a, b) => a + b, 0) === 0" class="text-center py-10 opacity-30 select-none text-sm font-bold uppercase tracking-widest">
-                                    Cart is Empty
-                                </div>
                             </div>
                             <div class="pt-6 border-t border-gray-100 flex justify-between items-center bg-nestle-blue/5 p-4 rounded-2xl">
                                 <span class="text-nestle-blue font-bold">Total Amount</span>
                                 <span class="text-2xl font-black text-gray-900">Rs <span x-text="calculateTotal().toLocaleString()"></span></span>
                             </div>
-                            <button type="submit" :disabled="calculateTotal() === 0" :class="calculateTotal() > 0 ? 'bg-nestle-blue' : 'bg-gray-200 cursor-not-allowed'" class="w-full h-16 text-white font-black text-lg rounded-2xl transition-all shadow-lg flex items-center justify-center gap-3">
-                                <span>Send Order Request</span>
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path></svg>
+
+                            <button type="submit" :disabled="calculateTotal() === 0" :class="calculateTotal() > 0 ? 'bg-nestle-blue shadow-nestle-blue/30' : 'bg-gray-200 cursor-not-allowed'" class="w-full h-16 text-white font-black text-lg rounded-2xl transition-all shadow-lg flex items-center justify-center gap-3">
+                                <span>Review & Checkout</span>
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path></svg>
                             </button>
                         </div>
                     </div>
                 </div>
+            </div>
+
+            <!-- Mobile Sticky Footer -->
+            <div class="lg:hidden fixed bottom-12 left-0 right-0 bg-white border-t border-gray-100 p-4 shadow-2xl z-40 transform transition-transform" x-show="calculateTotal() > 0" x-transition:enter="translate-y-full" x-transition:enter-end="translate-y-0">
+                <div class="flex items-center justify-between mb-4 px-2">
+                    <div>
+                        <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest">Total Bulk Payble</p>
+                        <p class="text-xl font-black text-gray-900">Rs <span x-text="calculateTotal().toLocaleString()"></span></p>
+                    </div>
+                </div>
+                <button type="submit" :disabled="calculateTotal() === 0" class="w-full h-14 bg-nestle-blue text-white rounded-xl font-black text-sm uppercase tracking-widest shadow-xl shadow-nestle-blue/30">
+                    Review Order
+                </button>
             </div>
         </form>
     </div>
@@ -142,7 +175,7 @@ function cartManager() {
         },
         
         updateQty(id, delta) {
-            let val = parseInt(this.cart[id]) + delta;
+            let val = parseInt(this.cart[id] || 0) + delta;
             if (val < 0) val = 0;
             this.cart[id] = val;
         },
