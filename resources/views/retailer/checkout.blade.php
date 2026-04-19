@@ -3,6 +3,15 @@
 @section('content')
 <div class="min-h-screen bg-[#F0F2F5] py-12" x-data="{ paymentMethod: 'card' }">
     <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        @if(session('error'))
+            <div class="mb-8 p-6 bg-red-600 text-white rounded-[2rem] shadow-xl shadow-red-200 flex items-center gap-4 border-2 border-white/20">
+                <div class="h-12 w-12 bg-white/20 rounded-2xl flex items-center justify-center text-2xl">⚠️</div>
+                <div>
+                    <p class="font-black text-xs uppercase tracking-widest leading-none mb-1">Attention Required</p>
+                    <p class="text-sm font-bold opacity-90">{{ session('error') }}</p>
+                </div>
+            </div>
+        @endif
         <!-- Progress Steps -->
         <div class="flex items-center justify-center gap-4 mb-12 opacity-80 scale-90 sm:scale-100">
             <div class="flex items-center gap-2 group">

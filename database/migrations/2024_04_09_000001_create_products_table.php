@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('sku')->unique()->index();
-            $table->enum('category', ['Dairy', 'Beverages', 'Noodles', 'Confectionery', 'Culinary'])->index();
+            $table->string('category')->index();
             $table->string('unit');
             $table->text('description')->nullable();
             $table->string('image_url', 500)->nullable();

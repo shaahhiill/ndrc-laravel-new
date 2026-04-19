@@ -35,10 +35,13 @@
             </div>
         </div>
 
-        @if($errors->has('items.*.quantity'))
-            <div class="mb-8 p-4 bg-red-50 border border-red-100 rounded-2xl flex items-center gap-3 text-red-600 font-bold text-sm">
-                <span>⚠️</span>
-                <span>Please ensure at least one product has a quantity greater than zero.</span>
+        @if(session('error'))
+            <div class="mb-8 p-6 bg-red-600 text-white rounded-[2rem] shadow-xl shadow-red-200 flex items-center gap-4 border-2 border-white/20">
+                <div class="h-12 w-12 bg-white/20 rounded-2xl flex items-center justify-center text-2xl">⚠️</div>
+                <div>
+                    <p class="font-black text-xs uppercase tracking-widest leading-none mb-1">Attention Required</p>
+                    <p class="text-sm font-bold opacity-90">{{ session('error') }}</p>
+                </div>
             </div>
         @endif
 
@@ -55,14 +58,20 @@
                         @if ($currentCat !== $p->category)
                             @php $currentCat = $p->category; @endphp
                             <div class="flex items-center gap-4 border-b border-gray-200 pb-2 mt-8">
-                                <h2 class="text-lg font-black text-nestle-brown uppercase tracking-tighter">{{ $currentCat }}</h2>
+                                <h2 class="text-lg font-black text-nestle-brown uppercase tracking-tighter">{{ $currentCat }} Hub</h2>
                                 <div class="flex-1 h-px bg-gradient-to-r from-gray-200 to-transparent"></div>
                             </div>
                         @endif
 
-                        <div class="bg-white rounded-[2rem] border border-gray-100 p-5 sm:p-6 flex flex-col sm:flex-row items-center gap-6 shadow-sm hover:shadow-xl hover:border-nestle-blue/20 transition-all group overflow-hidden relative">
+                        <div class="bg-white rounded-[2rem] border border-gray-100 p-6 flex flex-col sm:flex-row items-center gap-8 shadow-sm hover:shadow-2xl hover:border-nestle-blue/30 transition-all group relative overflow-hidden">
+                            <!-- Stock Indicator Dot -->
+                            <div class="absolute top-4 right-4 flex items-center gap-1.5 px-2 py-1 bg-green-50 rounded-lg">
+                                <div class="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></div>
+                                <span class="text-[9px] font-black text-green-700 uppercase tracking-widest">In Stock</span>
+                            </div>
+
                             <!-- Product Icon -->
-                            <div class="h-20 w-20 sm:h-24 sm:w-24 bg-[#F5F3F0] rounded-3xl flex-shrink-0 flex items-center justify-center text-4xl shadow-inner group-hover:scale-105 transition-transform">
+                            <div class="h-24 w-24 bg-gray-50 rounded-3xl flex-shrink-0 flex items-center justify-center text-5xl shadow-inner group-hover:scale-110 transition-transform duration-500">
                                 @switch($p->category)
                                     @case('Dairy') 🥛 @break
                                     @case('Beverages') ☕ @break
@@ -70,35 +79,37 @@
                                     @case('Confectionery') 🍫 @break
                                     @case('Culinary') 🥣 @break
                                     @case('Cereals') 🥣 @break
+                                    @case('Nutrition') 🤱 @break
                                     @default 📦
                                 @endswitch
                             </div>
 
                             <!-- Details -->
                             <div class="flex-1 text-center sm:text-left">
-                                <h3 class="text-lg font-bold text-gray-900 group-hover:text-nestle-blue transition-colors">{{ $p->name }}</h3>
-                                <p class="text-xs text-gray-500 mt-1 line-clamp-1">{{ $p->description }}</p>
-                                <div class="mt-3 flex flex-wrap justify-center sm:justify-start items-center gap-2">
-                                    <span class="px-2 py-1 bg-gray-100 text-gray-600 rounded-lg text-[10px] font-black uppercase tracking-widest">{{ $p->sku }}</span>
-                                    <span class="px-2 py-1 bg-nestle-blue/5 text-nestle-blue rounded-lg text-[10px] font-black uppercase tracking-widest">BULK {{ $p->unit }}</span>
+                                <h3 class="text-xl font-bold text-gray-900 group-hover:text-nestle-blue transition-colors">{{ $p->name }}</h3>
+                                <p class="text-xs text-gray-400 mt-2 font-medium">Wholesale SKU: <span class="text-gray-900 font-black">{{ $p->sku }}</span></p>
+                                <div class="mt-4 flex flex-wrap justify-center sm:justify-start items-center gap-3">
+                                    <span class="px-3 py-1 bg-nestle-blue text-white rounded-lg text-[10px] font-black uppercase tracking-widest">Bulk {{ $p->unit }}</span>
+                                    <span class="px-3 py-1 bg-gray-100 text-gray-500 rounded-lg text-[10px] font-black uppercase tracking-widest">Nestlé Lanka PLC</span>
                                 </div>
                             </div>
 
                             <!-- Pricing & Qty -->
-                            <div class="flex flex-col items-center sm:items-end gap-3 min-w-[150px]">
+                            <div class="flex flex-col items-center sm:items-end gap-4 min-w-[200px]">
                                 <div class="text-right">
-                                    <p class="text-xl font-black text-nestle-brown leading-none">Rs {{ number_format($p->price, 2) }}</p>
-                                    <p class="text-[9px] font-bold text-gray-400 uppercase tracking-widest mt-1">Wholesale Rate</p>
+                                    <p class="text-2xl font-black text-nestle-brown leading-none">Rs {{ number_format($p->price, 2) }}</p>
+                                    <p class="text-[9px] font-bold text-gray-400 uppercase tracking-widest mt-1">Per {{ $p->unit }}</p>
                                 </div>
                                 
-                                <div class="flex items-center bg-gray-50 rounded-2xl p-1 border border-gray-100 shadow-inner">
-                                    <button type="button" @click="updateQty({{ $p->id }}, -1)" class="w-10 h-10 rounded-xl flex items-center justify-center text-gray-400 hover:text-nestle-brown hover:bg-white transition-all font-black text-xl">-</button>
+                                <div class="flex items-center bg-gray-900 rounded-2xl p-1 shadow-xl">
+                                    <button type="button" @click="updateQty({{ $p->id }}, -1)" class="w-12 h-12 rounded-xl flex items-center justify-center text-white hover:bg-white/10 transition-all font-black text-2xl">−</button>
                                     <input type="number" 
                                            name="items[{{ $p->id }}][quantity]" 
                                            id="qty_{{ $p->id }}" 
                                            x-model="cart['{{ $p->id }}']"
-                                           class="w-12 text-center bg-transparent border-0 p-0 text-sm font-black text-gray-900 focus:ring-0">
-                                    <button type="button" @click="updateQty({{ $p->id }}, 1)" class="w-10 h-10 rounded-xl flex items-center justify-center text-nestle-blue hover:bg-white transition-all font-black text-xl">+</button>
+                                           class="w-16 text-center bg-transparent border-0 p-0 text-sm font-black text-white focus:ring-0"
+                                           min="0">
+                                    <button type="button" @click="updateQty({{ $p->id }}, 1)" class="w-12 h-12 rounded-xl flex items-center justify-center text-nestle-blue hover:bg-white/10 transition-all font-black text-2xl">+</button>
                                 </div>
                             </div>
                         </div>

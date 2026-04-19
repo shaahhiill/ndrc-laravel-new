@@ -15,9 +15,12 @@ class OrderController extends Controller
 {
     public function placeOrder(Request $request)
     {
+        if (auth()->user()->role !== 'retailer') {
+            return back()->with('error', 'Only retailers are authorized to place bulk orders.');
+        }
+
         $request->validate([
             'items' => 'required|array',
-            'items.*.quantity' => 'required|integer|min:1',
         ]);
 
         try {
@@ -27,16 +30,16 @@ class OrderController extends Controller
                 $totalAmount = 0;
                 $orderItemsData = [];
 
-                // Filter out zero quantities
-                $items = array_filter($request->items, fn($i) => $i['quantity'] > 0);
+                // Filter out zero quantities and missing data
+                $items = array_filter($request->items, fn($i) => isset($i['quantity']) && (int)$i['quantity'] > 0);
                 
                 if (empty($items)) {
-                    throw new \Exception("Cart is empty. Please select products.");
+                    throw new \Exception("Your cart is empty. Please select quantities for the products you wish to order.");
                 }
 
                 foreach ($items as $productId => $data) {
                     $product = Product::findOrFail($productId);
-                    $qty = $data['quantity'];
+                    $qty = (int)$data['quantity'];
                     $subtotal = $product->price * $qty;
                     $totalAmount += $subtotal;
 
@@ -48,10 +51,20 @@ class OrderController extends Controller
                     ];
                 }
 
-                $distributorId = $request->distributor_id ?: ($user->distributor_id ?: \App\Models\User::where('role', 'distributor')->first()?->id);
+                // Determine Distributor
+                $distributorId = $request->distributor_id ?: ($user->distributor_id ?: \App\Models\User::where('role', 'distributor')
+                    ->where(function($q) use ($user) {
+                        $q->where('territory', $user->territory)
+                          ->orWhere('region', $user->region);
+                    })->first()?->id);
                 
                 if (!$distributorId) {
-                    throw new \Exception("No distributor assigned to your account. Please contact Nestlé support.");
+                    // Final fallback to any distributor if location-based fails
+                    $distributorId = \App\Models\User::where('role', 'distributor')->first()?->id;
+                }
+
+                if (!$distributorId) {
+                    throw new \Exception("The NDRC network is currently unavailable in your region. Please contact Nestlé support.");
                 }
 
                 $order = Order::create([
@@ -69,23 +82,9 @@ class OrderController extends Controller
                     $order->items()->create($itemData);
                 }
 
-                if ($request->wantsJson() || $request->ajax()) {
-                    return response()->json([
-                        'status' => 'success',
-                        'redirect' => route('order.checkout', $order)
-                    ]);
-                }
-                
                 return redirect()->route('order.checkout', $order);
             });
         } catch (\Exception $e) {
-            if ($request->wantsJson() || $request->ajax()) {
-                return response()->json([
-                    'status' => 'error',
-                    'message' => $e->getMessage()
-                ], 400);
-            }
-
             return back()->with('error', $e->getMessage())->withInput();
         }
     }
@@ -137,6 +136,10 @@ class OrderController extends Controller
             'message' => "Your order {$order->order_number} is now " . str_replace('_', ' ', $request->status),
         ]);
 
-        return response()->json(['status' => 'success', 'message' => 'Status updated']);
+        if ($request->wantsJson() || $request->ajax()) {
+            return response()->json(['status' => 'success', 'message' => 'Status updated']);
+        }
+
+        return back()->with('success', 'Order status updated successfully.');
     }
 }

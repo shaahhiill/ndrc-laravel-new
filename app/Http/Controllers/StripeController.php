@@ -83,7 +83,7 @@ class StripeController extends Controller
             'message' => "Order {$order->order_number} has been placed via Cash on Delivery and is ready for review.",
         ]);
 
-        return redirect()->route('retailer.dashboard')->with('success', "Order {$order->order_number} placed successfully (Cash on Delivery)!");
+        return redirect()->route('retailer.orders')->with('success', "Order {$order->order_number} placed successfully (Cash on Delivery)!");
     }
 
     public function success(Request $request)

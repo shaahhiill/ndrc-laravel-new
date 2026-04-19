@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,7 +8,9 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
     <script>
         tailwind.config = {
             theme: {
@@ -26,32 +29,67 @@
         }
     </script>
     <style>
-        [x-cloak] { display: none !important; }
-        body { background-color: #010409; color: #FFFFFF; scroll-behavior: smooth; }
-        .glow { box-shadow: 0 0 50px -10px rgba(0, 133, 195, 0.3); }
-        .glass { background: rgba(13, 17, 23, 0.8); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1); }
-        .text-gradient { background: linear-gradient(135deg, #FFFFFF 0%, #38BDF8 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .sub-header { color: #8B949E; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; font-size: 0.75rem; }
+        [x-cloak] {
+            display: none !important;
+        }
+
+        body {
+            background-color: #010409;
+            color: #FFFFFF;
+            scroll-behavior: smooth;
+        }
+
+        .glow {
+            box-shadow: 0 0 50px -10px rgba(0, 133, 195, 0.3);
+        }
+
+        .glass {
+            background: rgba(13, 17, 23, 0.8);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .text-gradient {
+            background: linear-gradient(135deg, #FFFFFF 0%, #38BDF8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .sub-header {
+            color: #8B949E;
+            font-weight: 500;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+        }
     </style>
 </head>
+
 <body class="selection:bg-nestle-blue selection:text-white">
 
     <!-- Premium Navigation -->
-    <nav class="fixed top-0 left-0 right-0 z-[100] border-b border-white/10 bg-nestle-dark/80 backdrop-blur-xl" x-data="{ open: false }">
+    <nav class="fixed top-0 left-0 right-0 z-[100] border-b border-white/10 bg-nestle-dark/80 backdrop-blur-xl"
+        x-data="{ open: false }">
         <div class="max-w-7xl mx-auto px-6 h-20 flex justify-between items-center">
             <div class="flex items-center gap-6">
-                <!-- Direct Asset Access for Logo -->
-                <img src="https://upload.wikimedia.org/wikipedia/commons/4/4c/Nestl%C3%A9_Logo_2015.png" alt="Nestlé" class="h-6 brightness-0 invert">
+                <!-- Custom Nestle Lanka NDRC Identity -->
+                <img src="{{ asset('images/nestle-white.png') }}" alt="Nestlé Lanka NDRC" class="h-10 hover:scale-105 transition-transform">
                 <div class="h-6 w-px bg-white/10 hidden sm:block"></div>
-                <span class="text-xs font-bold tracking-[0.2em] text-white hidden sm:block">NDRC PORTAL</span>
+                <div class="hidden lg:flex flex-col">
+                    <span class="text-[10px] font-black tracking-[0.3em] text-white">NDRC LANKA</span>
+                    <span class="text-[8px] font-bold text-accent-blue/60 tracking-[0.2em] uppercase mt-0.5">National Distribution Layer</span>
+                </div>
             </div>
 
             <div class="hidden md:flex items-center gap-12">
-                <a href="#about" class="text-xs font-bold uppercase tracking-widest text-gray-400 hover:text-white transition-all">The Layer</a>
-                <a href="#analytics" class="text-xs font-bold uppercase tracking-widest text-gray-400 hover:text-white transition-all">Intelligence</a>
+                <a href="#about"
+                    class="text-xs font-bold uppercase tracking-widest text-gray-400 hover:text-white transition-all">The
+                    Layer</a>
+                <a href="#analytics"
+                    class="text-xs font-bold uppercase tracking-widest text-gray-400 hover:text-white transition-all">Intelligence</a>
                 @auth
                     @php
-                        $dashUrl = match(auth()->user()->role) {
+                        $dashUrl = match (auth()->user()->role) {
                             'retailer' => '/retailer/dashboard',
                             'wholesaler' => '/wholesaler/dashboard',
                             'distributor' => '/distributor/dashboard',
@@ -59,14 +97,22 @@
                             default => '/dashboard'
                         };
                     @endphp
-                    <a href="{{ $dashUrl }}" class="px-8 py-3 bg-nestle-blue text-white rounded-lg text-[10px] font-black uppercase tracking-widest shadow-xl shadow-nestle-blue/20 hover:scale-105 transition-all">Go To Dashboard</a>
+                    <a href="{{ $dashUrl }}"
+                        class="px-8 py-3 bg-nestle-blue text-white rounded-lg text-[10px] font-black uppercase tracking-widest shadow-xl shadow-nestle-blue/20 hover:scale-105 transition-all">Go
+                        To Dashboard</a>
                 @else
-                    <a href="{{ route('login') }}" class="text-[10px] font-black uppercase tracking-widest text-white hover:text-accent-blue transition-all">Login</a>
-                    <a href="{{ route('register') }}" class="px-8 py-3 border border-white/20 text-white rounded-lg text-[10px] font-black uppercase tracking-widest hover:bg-white hover:text-black transition-all">Register Account</a>
+                    <a href="{{ route('login') }}"
+                        class="text-[10px] font-black uppercase tracking-widest text-white hover:text-accent-blue transition-all">Login</a>
+                    <a href="{{ route('register') }}"
+                        class="px-8 py-3 border border-white/20 text-white rounded-lg text-[10px] font-black uppercase tracking-widest hover:bg-white hover:text-black transition-all">Register
+                        Account</a>
                 @endauth
             </div>
-            
-            <button @click="open = !open" class="md:hidden text-white"><svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16" stroke-width="2"></path></svg></button>
+
+            <button @click="open = !open" class="md:hidden text-white"><svg class="w-8 h-8" fill="none"
+                    stroke="currentColor" viewBox="0 0 24 24">
+                    <path d="M4 6h16M4 12h16M4 18h16" stroke-width="2"></path>
+                </svg></button>
         </div>
     </nav>
 
@@ -82,15 +128,20 @@
             <div class="max-w-4xl">
                 <p class="sub-header mb-8 text-accent-blue">Digital Information Layer — Nestlé Lanka PLC</p>
                 <h1 class="text-6xl lg:text-9xl font-black tracking-tighter leading-[0.9] text-white mb-10">
-                    Bridges the <br/>
+                    Bridges the <br />
                     <span class="text-gradient">Last Mile Gap.</span>
                 </h1>
                 <p class="text-xl lg:text-2xl text-gray-300 font-medium leading-relaxed mb-14 max-w-2xl">
-                    NDRC is the national infrastructure for granular supply chain visibility. We don't just move products—we move the intelligence that powers the flow.
+                    NDRC is the national infrastructure for granular supply chain visibility. We don't just move
+                    products—we move the intelligence that powers the flow.
                 </p>
                 <div class="flex flex-col sm:flex-row items-center gap-6">
-                    <a href="{{ route('register') }}" class="w-full sm:w-auto px-12 py-6 bg-nestle-blue text-white font-black uppercase tracking-widest text-xs rounded-xl shadow-2xl shadow-nestle-blue/30 hover:bg-accent-blue transition-all text-center">Join the Network</a>
-                    <a href="#about" class="w-full sm:w-auto px-12 py-6 border border-white/10 text-white font-black uppercase tracking-widest text-xs rounded-xl hover:bg-white/5 transition-all text-center">Core Purpose</a>
+                    <a href="{{ route('register') }}"
+                        class="w-full sm:w-auto px-12 py-6 bg-nestle-blue text-white font-black uppercase tracking-widest text-xs rounded-xl shadow-2xl shadow-nestle-blue/30 hover:bg-accent-blue transition-all text-center">Join
+                        the Network</a>
+                    <a href="#about"
+                        class="w-full sm:w-auto px-12 py-6 border border-white/10 text-white font-black uppercase tracking-widest text-xs rounded-xl hover:bg-white/5 transition-all text-center">Core
+                        Purpose</a>
                 </div>
             </div>
         </div>
@@ -102,35 +153,46 @@
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
                 <div>
                     <p class="sub-header mb-4">The Solution</p>
-                    <h2 class="text-4xl lg:text-5xl font-extrabold mb-10 tracking-tight text-white leading-tight">Eliminating the <span class="text-accent-blue">"Black Box"</span> in localized retail.</h2>
+                    <h2 class="text-4xl lg:text-5xl font-extrabold mb-10 tracking-tight text-white leading-tight">
+                        Eliminating the <span class="text-accent-blue">"Black Box"</span> in localized retail.</h2>
                     <p class="text-gray-400 text-lg leading-relaxed mb-12">
-                        For decades, the final mile of distribution—from wholesaler to small retailer—has been invisible. NDRC provides the missing digital layer that aggregates data across territories, creating a unified view of actual market demand.
+                        For decades, the final mile of distribution—from wholesaler to small retailer—has been
+                        invisible. NDRC provides the missing digital layer that aggregates data across territories,
+                        creating a unified view of actual market demand.
                     </p>
-                    
+
                     <div class="space-y-8">
                         <div class="flex gap-6">
-                            <div class="h-12 w-12 rounded-xl bg-nestle-blue/10 flex items-center justify-center shrink-0 border border-nestle-blue/20">
+                            <div
+                                class="h-12 w-12 rounded-xl bg-nestle-blue/10 flex items-center justify-center shrink-0 border border-nestle-blue/20">
                                 <span class="text-nestle-blue text-xl">01</span>
                             </div>
                             <div>
-                                <h4 class="text-lg font-bold text-white mb-2 tracking-tight">Real-Time Order Aggregation</h4>
-                                <p class="text-gray-500 text-sm">Every localized order is instantly captured and synced with the national distribution hub for predictive planning.</p>
+                                <h4 class="text-lg font-bold text-white mb-2 tracking-tight">Real-Time Order Aggregation
+                                </h4>
+                                <p class="text-gray-500 text-sm">Every localized order is instantly captured and synced
+                                    with the national distribution hub for predictive planning.</p>
                             </div>
                         </div>
                         <div class="flex gap-6">
-                            <div class="h-12 w-12 rounded-xl bg-nestle-blue/10 flex items-center justify-center shrink-0 border border-nestle-blue/20">
+                            <div
+                                class="h-12 w-12 rounded-xl bg-nestle-blue/10 flex items-center justify-center shrink-0 border border-nestle-blue/20">
                                 <span class="text-nestle-blue text-xl">02</span>
                             </div>
                             <div>
                                 <h4 class="text-lg font-bold text-white mb-2 tracking-tight">Wholesaler Visibility</h4>
-                                <p class="text-gray-500 text-sm">Full transparency into wholesaler stock levels and regional fulfillment capacity, identifying bottlenecks before they impact sales.</p>
+                                <p class="text-gray-500 text-sm">Full transparency into wholesaler stock levels and
+                                    regional fulfillment capacity, identifying bottlenecks before they impact sales.</p>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="relative group">
-                    <div class="absolute -inset-4 bg-nestle-blue/20 rounded-[3rem] blur-3xl opacity-50 group-hover:opacity-100 transition-opacity"></div>
-                    <img src="{{ asset('images/analytics-detail.jpg') }}" alt="Analytics Layer" class="relative rounded-[2.5rem] border border-white/10 shadow-3xl">
+                    <div
+                        class="absolute -inset-4 bg-nestle-blue/20 rounded-[3rem] blur-3xl opacity-50 group-hover:opacity-100 transition-opacity">
+                    </div>
+                    <img src="{{ asset('images/analytics-detail.jpg') }}" alt="Analytics Layer"
+                        class="relative rounded-[2.5rem] border border-white/10 shadow-3xl">
                 </div>
             </div>
         </div>
@@ -150,12 +212,14 @@
                     <div class="flex justify-between items-start mb-8">
                         <div>
                             <h4 class="text-xl font-bold text-white mb-1">Smart Order Recommendations</h4>
-                            <p class="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Predictive Restocking</p>
+                            <p class="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Predictive
+                                Restocking</p>
                         </div>
                         <span class="text-2xl">🤖</span>
                     </div>
                     <div id="reco-chart" class="mb-8"></div>
-                    <p class="text-gray-400 text-xs leading-relaxed">Leverages historical sales velocity and regional trends to suggest optimal SKU volume—minimizing out-of-stock events at the retail level.</p>
+                    <p class="text-gray-400 text-xs leading-relaxed">Leverages historical sales velocity and regional
+                        trends to suggest optimal SKU volume—minimizing out-of-stock events at the retail level.</p>
                 </div>
 
                 <!-- Detailed Tech Card 2 -->
@@ -163,12 +227,14 @@
                     <div class="flex justify-between items-start mb-8">
                         <div>
                             <h4 class="text-xl font-bold text-white mb-1">Market Demand Visibility</h4>
-                            <p class="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Regional Depletion Data</p>
+                            <p class="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Regional Depletion
+                                Data</p>
                         </div>
                         <span class="text-2xl">🔥</span>
                     </div>
                     <div id="demand-chart" class="mb-8"></div>
-                    <p class="text-gray-400 text-xs leading-relaxed font-medium">Aggregating thousands of daily retail transactions to map actual consumer pull across 24 regional districts.</p>
+                    <p class="text-gray-400 text-xs leading-relaxed font-medium">Aggregating thousands of daily retail
+                        transactions to map actual consumer pull across 24 regional districts.</p>
                 </div>
 
                 <!-- Detailed Tech Card 3 -->
@@ -176,12 +242,14 @@
                     <div class="flex justify-between items-start mb-8">
                         <div>
                             <h4 class="text-xl font-bold text-white mb-1">Retailer Sales Intelligence</h4>
-                            <p class="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Point of Sale Growth</p>
+                            <p class="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Point of Sale
+                                Growth</p>
                         </div>
                         <span class="text-2xl">💹</span>
                     </div>
                     <div id="growth-chart" class="mb-8"></div>
-                    <p class="text-gray-400 text-xs leading-relaxed">Empowers individual retailers with personal performance dashboards—driving loyalty and aggressive business scaling.</p>
+                    <p class="text-gray-400 text-xs leading-relaxed">Empowers individual retailers with personal
+                        performance dashboards—driving loyalty and aggressive business scaling.</p>
                 </div>
             </div>
 
@@ -211,14 +279,20 @@
     <footer class="py-24 bg-nestle-dark border-t border-white/5">
         <div class="max-w-7xl mx-auto px-6">
             <div class="flex flex-col md:flex-row justify-between items-center gap-12">
-                <div class="flex items-center gap-4">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/4/4c/Nestl%C3%A9_Logo_2015.png" alt="Nestlé" class="h-6 brightness-0 invert opacity-30">
-                    <div class="h-6 w-px bg-white/10"></div>
-                    <p class="text-[10px] font-black uppercase text-white/40 tracking-[0.3em]">NDRC National Distribution Support</p>
+                <div class="flex items-center gap-6">
+                    <img src="{{ asset('images/nestle-white.png') }}"
+                        alt="Nestlé" class="h-12 opacity-60 hover:opacity-100 transition-all duration-500">
+                    <div class="h-8 w-px bg-white/10"></div>
+                    <div>
+                        <p class="text-[10px] font-black uppercase text-white tracking-[0.3em]">NDRC National Support</p>
+                        <p class="text-[8px] font-bold text-gray-600 uppercase tracking-widest mt-1">Institutional Monitoring Framework</p>
+                    </div>
                 </div>
                 <div class="flex gap-10">
-                    <a href="{{ route('login') }}" class="text-[10px] font-bold uppercase tracking-widest text-white/30 hover:text-white transition-all">Login</a>
-                    <a href="{{ route('register') }}" class="text-[10px] font-bold uppercase tracking-widest text-white/30 hover:text-white transition-all">Register</a>
+                    <a href="{{ route('login') }}"
+                        class="text-[10px] font-bold uppercase tracking-widest text-white/30 hover:text-white transition-all">Login</a>
+                    <a href="{{ route('register') }}"
+                        class="text-[10px] font-bold uppercase tracking-widest text-white/30 hover:text-white transition-all">Register</a>
                 </div>
             </div>
             <div class="mt-16 text-center text-gray-600 text-[10px] font-medium uppercase tracking-widest">
@@ -228,7 +302,7 @@
     </footer>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             // Chart 1: Recommendations
             var options1 = {
                 series: [{ name: 'SKU Re-Order Prediction', data: [30, 40, 45, 50, 49, 60, 70, 91] }],
@@ -262,4 +336,5 @@
         });
     </script>
 </body>
+
 </html>
