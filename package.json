@@ -4,11 +4,7 @@
     "type": "module",
     "scripts": {
         "build": "vite build",
-        "dev": "vite",
-        "dev:all": "concurrently \"php artisan serve\" \"npm run dev\"",
-        "test:e2e": "playwright test",
-        "test:e2e:ui": "playwright test --ui",
-        "test:e2e:report": "playwright show-report"
+        "dev": "vite"
     },
     "devDependencies": {
         "@playwright/test": "^1.40.0",
